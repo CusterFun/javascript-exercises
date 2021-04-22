@@ -1,0 +1,1 @@
+global.console.log('hell®o nodejs');
