@@ -8,4 +8,4 @@ console.log(lib.add);
 lib.additional = 'test';
 
 // 查看 module.exports 和 exports 可以使用 webpack 工具
-// webpack --devtool none --mode development --target node index.js
+// webpack --devtool none --mode development --target node graphql.js
