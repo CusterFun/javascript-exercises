@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <p v-upper-text="message">xxxxx</p>
+    自动获取焦点：<input type="text" v-focus>
+  </div>
+  <div id="app2">
+    <p v-upper-text="msg">xxxxx</p>
+
+  </div>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+  <script>
+    // 注册全局自定义指令，可以在多个Vue管理的入口下使用该指令
+    // 第一个参数为指令名，但是不要有v-开头
+    Vue.directive('upper-text', {
+      //一般对样式 的操作在bind中，bind函数只调用一次
+      bind: function (el) {
+        el.style.color = 'red'
+      },
+      //一般对js操作在inserted中，inserted也是只调用一次
+      // el是当前指令作用的那个Dom元素，
+      // binding用于获取使用了当前指令的绑定值(value)、表达式(expression)、指令名(name)等
+      inserted: function (el, binding) {
+        // 将所有字母文本内容转换为大写
+        el.innerHTML = binding.value.toUpperCase()
+      }
+    })
+
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'mengxuegu, 陪你学习伴你梦想'
+      },
+      //注册局部自定义指令：只能在当前Vue实例管理的入口 下引用这个指令
+      directives: {
+        'focus': { // 指令名，
+          bind: function () {
+
+          },
+          // 刷新页面自动获取焦点
+          inserted: function (el, binding) {
+            //被 v-focus 作用的那个元素在刷新页面后会自动 获取焦点
+            el.focus()
+          }
+        }
+      }
+    })
+
+    new Vue({
+      el: '#app2',
+      data: {
+        msg: 'hello'
+      }
+    })
+  </script>
+</body>
+
+</html>

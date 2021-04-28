@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    /* 显示或隐藏的过渡效果 */
+    .mxg-enter-active,
+    .mxg-leave-active {
+      transition: opacity 1s;
+      /*过渡：渐变效果持续时长1秒 */
+    }
+
+    /* 显示前或隐藏后的效果 */
+    .mxg-enter,
+    .mxg-leave-to {
+      opacity: 0;
+      /* 都是隐藏效果 */
+    }
+
+    /* 可以针对显示和隐藏指定不同的效果 */
+    /* 显示过渡效果 1秒 */
+    .meng-enter-active {
+      transition: all 1s;
+      /*all 所有效果，持续1秒*/
+    }
+
+    /* 隐藏过渡效果 5秒 */
+    .meng-leave-active {
+      transition: all 5s;
+      /*all 所有效果，持续5秒*/
+    }
+
+    /* 显示前或隐藏后的效果 */
+    .meng-enter,
+    .meng-leave-to {
+      opacity: 0;
+      /* 都是隐藏效果 */
+      transform: translateX(10px);
+      /*水平方向 移动 10px*/
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app1">
+    <button @click="show = !show">渐变过渡</button>
+    <transition name="mxg">
+      <p v-show="show">mengxuegu</p>
+    </transition>
+  </div>
+
+  <div id="app2">
+    <button @click="show = !show">渐变平滑过渡</button>
+    <transition name="meng">
+      <p v-show="show">mengxuegu</p>
+    </transition>
+  </div>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app1',
+      data: {
+        show: true
+      }
+    })
+
+    new Vue({
+      el: '#app2',
+      data: {
+        show: true
+      }
+    })
+  </script>
+</body>
+
+</html>

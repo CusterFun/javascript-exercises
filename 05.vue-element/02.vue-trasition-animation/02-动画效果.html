@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    /* 显示过程中的动画效果 */
+    .bounce-enter-active {
+      animation: bounce-in 1s;
+    }
+
+    /* 隐藏过程中的动画效果 */
+    .bounce-leave-active {
+      animation: bounce-in 1s reverse;
+    }
+
+    @keyframes bounce-in {
+      0% {
+        /*持续时长百分比，比如针对1s： 0%代表0秒，50%代表0.5*/
+        transform: scale(0);
+        /*缩小为0*/
+      }
+
+      50% {
+        transform: scale(1.5);
+        /*放大1.5倍*/
+      }
+
+      100% {
+        transform: scale(1);
+        /*原始大小*/
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="demo">
+    <button @click="show = !show">放大缩小动画</button>
+    <transition name="bounce">
+      <p v-show="show">梦学谷——陪你学习，伴你成长</p>
+    </transition>
+  </div>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#demo',
+      data: {
+        show: true
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,97 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
 </head>
+
 <body>
-    <div id="app">
-        数学：<input type="text" v-model="mathScore">
-        英语：<input type="text" v-model="englishScore"><br>
-        <!-- v-model调用函数时，不要少了小括号 -->
-        总得分（函数-单向绑定）：<input type="text" v-model="sumScore()"><br>
-        <!-- 绑定计算属性后面不加上小括号 -->
-        总得分（计算属性-单向绑定）：<input type="text" v-model="sumScore1"><br>
-        总得分（计算属性-双向绑定）：<input type="text" v-model="sumScore2">
+  <div id="app">
+    数学：<input type="text" v-model="mathScore">
+    英语：<input type="text" v-model="englishScore"><br>
+    <!-- v-model调用函数时，不要少了小括号 -->
+    总得分（函数-单向绑定）：<input type="text" v-model="sumScore()"><br>
+    <!-- 绑定计算属性后面不加上小括号 -->
+    总得分（计算属性-单向绑定）：<input type="text" v-model="sumScore1"><br>
+    总得分（计算属性-双向绑定）：<input type="text" v-model="sumScore2">
 
-        <!-- 通过 watch 选项 监听数学分数， 当数学更新后回调函数中重新计算总分sumScore3 -->
-        总得分（监听器）: <input type="text" v-model="sumScore3">   
+    <!-- 通过 watch 选项 监听数学分数， 当数学更新后回调函数中重新计算总分sumScore3 -->
+    总得分（监听器）: <input type="text" v-model="sumScore3">
 
-    </div>
-    <script src="../node_modules/vue/dist/vue.js"></script>
-    <script>
-        /* 
-        1. 函数没有缓存，每次都会被调用
-        2. 计算属性有缓存 ，只有当计算属性体内的属性值被更改之后才会被调用，不然不会被调用
-        3. 函数只支持单向
-        4. 计算属性默认情况下：只有getter函数，而没有setter函数，所以只支持单向
-            如果你要进行双向，则需要自定义setter函数
-        */
-        var vm = new Vue({
-            el: '#app',
-            data: {
-                mathScore: 80,
-                englishScore: 90,
-                sumScore3: 0 // 通过监听器，计算出来的总得分
-            },
+  </div>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script>
+    /*
+    1. 函数没有缓存，每次都会被调用
+    2. 计算属性有缓存 ，只有当计算属性体内的属性值被更改之后才会被调用，不然不会被调用
+    3. 函数只支持单向
+    4. 计算属性默认情况下：只有getter函数，而没有setter函数，所以只支持单向
+        如果你要进行双向，则需要自定义setter函数
+    */
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        mathScore: 80,
+        englishScore: 90,
+        sumScore3: 0 // 通过监听器，计算出来的总得分
+      },
 
-            methods: {
-                sumScore: function () { //100
-                    console.log('sumScore函数被调用')
-                    // this 指向的就是 vm 实例 , 减0是为了字符串转为数字运算
-                    return (this.mathScore-0) + (this.englishScore-0)
-                }
-            },
+      methods: {
+        sumScore: function () { //100
+          console.log('sumScore函数被调用')
+          // this 指向的就是 vm 实例 , 减0是为了字符串转为数字运算
+          return (this.mathScore - 0) + (this.englishScore - 0)
+        }
+      },
 
-            computed: { //定义计算属性选项
-                //这个是单向绑定，默认只有getter方法
-                sumScore1: function () { //计算属性有缓存，如果计算属性体内的属性值没有发生改变，则不会重新计算，只有发生改变 的时候才会重新计算
-                    console.log('sumScore1计算属性被调用')
-                    return (this.mathScore-0) + (this.englishScore-0)
-                },
+      computed: { //定义计算属性选项
+        //这个是单向绑定，默认只有getter方法
+        sumScore1: function () { //计算属性有缓存，如果计算属性体内的属性值没有发生改变，则不会重新计算，只有发生改变 的时候才会重新计算
+          console.log('sumScore1计算属性被调用')
+          return (this.mathScore - 0) + (this.englishScore - 0)
+        },
 
-                sumScore2: { //有了setter和getter之后就可以进行双向绑定
-                    //获取数据
-                    get: function() {
-                        console.log('sumScore2.get被调用')
-                        return (this.mathScore-0) + (this.englishScore-0)
-                    },
-                    //设置数据， 当 sumScore2 计算属性更新之后 ，则会调用set方法
-                    set: function(newValue) { // newVulue 是 sumScore2 更新之后的新值
-                        console.log('sumScore2.set被调用')
-                        var avgScore = newValue / 2
-                        this.mathScore = avgScore
-                        this.englishScore = avgScore
-                    }
-                }
-            },
-            
-            //监听器，
-            watch: {
-                //需求：通过 watch 选项 监听数学分数， 当数学更新后回调函数中重新计算总分sumScore3
-                mathScore: function(newValue, oldValue) {
-                    console.log('watch监听器,监听到了数学分数已经更新')
-                    //  newValue 是更新后的值，oldValue更新之前的值
-                    this.sumScore3 = (newValue-0) + (this.englishScore-0)
-                }
-            },
-        })
-
-        //监听器方式2: 通过 vm 实例进行调用
-        //第1个参数是被监听 的属性名， 第2个是回调函数 
-        vm.$watch('englishScore', function(newValue) {
-            //newValue就是更新之后的英语分数
-            this.sumScore3 = (newValue-0) + (this.mathScore-0)
-        })
-
-        vm.$watch('sumScore3', function(newValue) {
-            //newValue就是更新之后部分
+        sumScore2: { //有了setter和getter之后就可以进行双向绑定
+          //获取数据
+          get: function () {
+            console.log('sumScore2.get被调用')
+            return (this.mathScore - 0) + (this.englishScore - 0)
+          },
+          //设置数据， 当 sumScore2 计算属性更新之后 ，则会调用set方法
+          set: function (newValue) { // newVulue 是 sumScore2 更新之后的新值
+            console.log('sumScore2.set被调用')
             var avgScore = newValue / 2
             this.mathScore = avgScore
             this.englishScore = avgScore
-        })
-    </script>
+          }
+        }
+      },
+
+      //监听器，
+      watch: {
+        //需求：通过 watch 选项 监听数学分数， 当数学更新后回调函数中重新计算总分sumScore3
+        mathScore: function (newValue, oldValue) {
+          console.log('watch监听器,监听到了数学分数已经更新')
+          //  newValue 是更新后的值，oldValue更新之前的值
+          this.sumScore3 = (newValue - 0) + (this.englishScore - 0)
+        }
+      },
+    })
+
+    //监听器方式2: 通过 vm 实例进行调用
+    //第1个参数是被监听 的属性名， 第2个是回调函数 
+    vm.$watch('englishScore', function (newValue) {
+      //newValue就是更新之后的英语分数
+      this.sumScore3 = (newValue - 0) + (this.mathScore - 0)
+    })
+
+    vm.$watch('sumScore3', function (newValue) {
+      //newValue就是更新之后部分
+      var avgScore = newValue / 2
+      this.mathScore = avgScore
+      this.englishScore = avgScore
+    })
+  </script>
 </body>
+
 </html>

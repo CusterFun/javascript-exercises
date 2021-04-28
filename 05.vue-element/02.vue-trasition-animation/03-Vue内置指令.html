@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    /* 将带有 v-clock 属性的标签隐藏 */
+    [v-clock] {
+      display: none
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" v-clock>
+    <!-- v-pre
+        1. 用于显示双大括号{{}}
+        2. 跳过这个元素和它的子元素的编译过程，这样可以提高性能。 -->
+    <span v-pre>{{你好，梦学谷！}}</span>
+
+    <!-- 使用双大括号，会有双括号 {{}} 闪烁出来。
+        可以通过 v-text进行解决闪烁问题
+
+        如果我就需要使有双大括号，又不想让它有{{}} 闪烁出来 使用 v-clock
+        -->
+    <h3>{{message}}</h3>
+    <h3>{{message}}</h3>
+    <h3>{{message}}</h3>
+    <h3 v-text="message"></h3>
+    <h3 v-text="message"></h3>
+    <h3 v-text="message"></h3>
+
+  </div>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'hello mxg.....'
+      }
+    })
+  </script>
+</body>
+
+</html>
