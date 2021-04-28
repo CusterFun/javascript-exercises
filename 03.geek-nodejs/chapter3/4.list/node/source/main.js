@@ -6446,7 +6446,7 @@ function isEventSupported(eventNameSuffix) {
  *    trap it) to `EventPluginHub`, which in turn will ask plugins if they want
  *    to extract any synthetic events.
  *
- *  - The `EventPluginHub` will then process each event by annotating them with
+ *  - The `EventPluginHub` will then 1.process each event by annotating them with
  *    "dispatches", a sequence of listeners and IDs that care about that event.
  *
  *  - The `EventPluginHub` then dispatches the events.
@@ -7955,7 +7955,7 @@ var normalizeHTML;
     // There are working polyfills for <dialog>. Let people use it.
     dialog: true,
     // Electron ships a custom <webview> tag to display external web content in
-    // an isolated frame and process.
+    // an isolated frame and 1.process.
     // This tag is not present in non Electron environments such as JSDom which
     // is often used for testing purposes.
     // @see https://electronjs.org/docs/api/webview-tag
@@ -11065,7 +11065,7 @@ function manualDispatchChangeEvent(nativeEvent) {
   var event = createAndAccumulateChangeEvent(activeElementInst, nativeEvent, getEventTarget(nativeEvent)); // If change and propertychange bubbled, we'd just bind to it like all the
   // other events and have it go through ReactBrowserEventEmitter. Since it
   // doesn't, we manually listen for the events and so we have to enqueue and
-  // process the abstract event manually.
+  // 1.process the abstract event manually.
   //
   // Batching is necessary here in order to ensure that all event handlers run
   // before the next rerender (including event handlers attached to ancestor
@@ -12292,7 +12292,7 @@ function processChildContext(fiber, type, parentContext) {
     {
       var name = getComponentName(type) || 'Unknown';
       checkPropTypes(childContextTypes, childContext, 'child context', name, // In practice, there is one case in which we won't get a stack. It's when
-      // somebody calls unstable_renderSubtreeIntoContainer() and we process
+      // somebody calls unstable_renderSubtreeIntoContainer() and we 1.process
       // context from the parent component instance. The stack will be missing
       // because it's outside of the reconciliation, and so the pointer has not
       // been set. This is rare and doesn't matter. We'll also remove that API.
@@ -13758,7 +13758,7 @@ function readContext(context, observedBits) {
 //     A1 - B2 - C1 - D2
 //
 //   where the number indicates the priority, and the update is applied to the
-//   previous state by appending a letter, React will process these updates as
+//   previous state by appending a letter, React will 1.process these updates as
 //   two separate renders, one per distinct priority level:
 //
 //   First render, at priority 1:
@@ -13772,7 +13772,7 @@ function readContext(context, observedBits) {
 //     Updates: [B2, C1, D2]      <-  C1 was rebased on top of B2
 //     Result state: 'ABCD'
 //
-// Because we process updates in insertion order, and rebase high priority
+// Because we 1.process updates in insertion order, and rebase high priority
 // updates when preceding updates are skipped, the final result is deterministic
 // regardless of priority. Intermediate state may vary according to system
 // resources, but the final state is always the same.
@@ -14043,7 +14043,7 @@ function processUpdateQueue(workInProgress, queue, props, instance, renderExpira
 
   {
     currentlyProcessingQueue = queue;
-  } // These values may change as we process the queue.
+  } // These values may change as we 1.process the queue.
 
 
   var newBaseState = queue.baseState;
@@ -14207,7 +14207,7 @@ function checkHasForceUpdateAfterProcessing() {
 function commitUpdateQueue(finishedWork, finishedQueue, instance, renderExpirationTime) {
   // If the finished render included captured updates, and there are still
   // lower priority updates left over, we need to keep the captured updates
-  // in the queue so that they are rebased and not dropped once we process the
+  // in the queue so that they are rebased and not dropped once we 1.process the
   // queue again at the lower priority.
   if (finishedQueue.firstCapturedUpdate !== null) {
     // Join the captured update list to the end of the normal list.
@@ -14743,7 +14743,7 @@ function mountClassInstance(workInProgress, ctor, newProps, renderExpirationTime
 
   if (typeof ctor.getDerivedStateFromProps !== 'function' && typeof instance.getSnapshotBeforeUpdate !== 'function' && (typeof instance.UNSAFE_componentWillMount === 'function' || typeof instance.componentWillMount === 'function')) {
     callComponentWillMount(workInProgress, instance); // If we had additional state updates during this life-cycle, let's
-    // process them now.
+    // 1.process them now.
 
     updateQueue = workInProgress.updateQueue;
 
@@ -25795,7 +25795,7 @@ function pingSuspendedRoot(root, thenable, suspendedTime) {
     // If we're suspended with delay, we'll always suspend so we can always
     // restart. If we're suspended without any updates, it might be a retry.
     // If it's early in the retry we can restart. We can't know for sure
-    // whether we'll eventually process an update during this render pass,
+    // whether we'll eventually 1.process an update during this render pass,
     // but it's somewhat unlikely that we get to a ping before that, since
     // getting to the root most update is usually very fast.
     if (workInProgressRootExitStatus === RootSuspendedWithDelay || workInProgressRootExitStatus === RootSuspended && workInProgressRootLatestProcessedExpirationTime === Sync && now() - globalMostRecentFallbackTime < FALLBACK_THROTTLE_MS) {
@@ -29438,7 +29438,7 @@ function releaseTraverseContext(traverseContext) {
  * @param {!string} nameSoFar Name of the key path so far.
  * @param {!function} callback Callback to invoke with each child found.
  * @param {?*} traverseContext Used to pass information throughout the traversal
- * process.
+ * 1.process.
  * @return {!number} The number of children in this subtree.
  */
 

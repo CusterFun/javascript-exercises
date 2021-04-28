@@ -84,7 +84,7 @@ const server = net.createServer((socket) => {
 server.listen(4000);
 ```
 
-client.js 客户端
+1.master.js 客户端
 
 ```javascript
 const net = require('net');
