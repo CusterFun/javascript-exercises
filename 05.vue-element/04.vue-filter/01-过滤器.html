@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>过滤器</title>
+</head>
+
+<body>
+  <div id="app">
+    <h3>测试过滤器单个参数</h3>
+    <!-- 原始属性名|过滤器 -->
+    <p>{{content | contentFilter}}</p>
+    <input type="text" :value="content | contentFilter">
+
+    <h3>测试过滤器多个参数</h3>
+    <p>{{javaScore | add(vueScore, pythonScore)}}</p>
+    <input type="text" :value="javaScore | add(vueScore, pythonScore)">
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+
+    /*全局过滤器*/
+    /* Vue.filter('contentFilter', function (value) {
+        if(!value) {
+            return ''
+        }
+        return value.toString().toUpperCase().replace('TMD', '***').replace('SB', '***')
+    }) */
+
+    new Vue({
+      el: '#app',
+      data: {
+        content: '小伙子，tmd就是个SB',
+        javaScore: 90,
+        vueScore: 99,
+        pythonScore: 89
+      },
+
+      filters: { //定义局部 过滤器
+        contentFilter(value) { // contentFilter 过滤名, value
+          if (!value) {
+            return ''
+          }
+          return value.toString().toUpperCase().replace('TMD', '***').replace('SB', '***')
+        },
+        add(num1, num2, num3) {// add 过滤名， num1 其实就是引用时 | 左边的那个参数
+          return num1 + num2 + num3
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
