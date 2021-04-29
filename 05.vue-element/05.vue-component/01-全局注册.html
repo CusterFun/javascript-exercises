@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>全局注册</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 引用组件时，组件名必须采用横线分隔符 -->
+    <component-a></component-a>
+    <component-a></component-a>
+    <component-b></component-b>
+  </div>
+
+  <div id="app2">
+    <component-a></component-a>
+  </div>
+  <script src="node_modules/vue/dist/vue.js"></script>
+  <script>
+    //全局注册组件
+    /*
+    组件名：
+        1. 驼峰、横线分隔符命名方式
+        2. 使用组件时，必须采用横线分隔符的方式进行引用
+
+    组件可以理解为就是特殊的 Vue 实例 ， 不需要手动的实例化而已，它用于管理自已的模板
+    */
+    Vue.component('component-a', {
+      // template选项指定组件的模板代码
+      template: '<div><h1>头部组件---{{ name }}</h1></div>',
+      data: function () { // 在组件中，data 选项必须 是一个函数
+        return {
+          name: '全局组件'
+        }
+      }
+    })
+
+    // 定义局部 组件对象
+    const ComponentB = {
+      template: '<div>这是 {{ name }}</div>',
+      data: function () {
+        return {
+          name: '局部组件'
+        }
+      }
+    }
+
+    new Vue({
+      el: '#app',
+      // 组件选项
+      components: {
+        // key: value   key 组件名，value 就是组件对象
+        'component-b': ComponentB
+      }
+    })
+
+    new Vue({
+      el: '#app2'
+    })
+  </script>
+</body>
+
+</html>
