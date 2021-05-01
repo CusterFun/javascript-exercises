@@ -1,0 +1,9 @@
+[
+  { "id": 1, "name": "小梦", "salary": 8000},
+  { "id": 2, "name": "小欣", "salary": 15000 },
+  { "id": 3, "name": "小温", "salary": 6000 },
+  { "id": 4, "name": "小非", "salary": 7000 },
+  { "id": 5, "name": "小波", "salary": 10000 },
+  { "id": 6, "name": "小超", "salary": 5000 },
+  { "id": 7, "name": "小伟", "salary": 6000 }
+]

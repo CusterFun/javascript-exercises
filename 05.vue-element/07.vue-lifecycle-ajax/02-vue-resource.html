@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue-resource</title>
+</head>
+
+<body>
+  <div id="app">
+    <h1>{{ repData }}</h1>
+  </div>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+  <script src="./node_modules/vue-resource/dist/vue-resource.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        repData: []
+      },
+      // 发送异步请求
+      created() {
+        // GET /someUrl
+        this.$http.get('http://localhost:5500/05.vue-element/07.vue-lifecycle-ajax/db.json').then(response => { // function(response) {}
+          // 回调函数需要使用箭头函数（this Vue实例），不然 this 代表 window
+          console.log(response.data)
+          this.repData = response.data
+        }, response => {
+          // error callback
+          console.log(response.statusText, response.status)
+        });
+      },
+    })
+  </script>
+</body>
+
+</html>
