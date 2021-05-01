@@ -2,7 +2,9 @@
   const template = `<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
     <!--右边上半区域-->
-        <h1 class="page-header">Dashboard</h1>
+    <!-- <h1 class="page-header">Dashboard</h1> -->
+        <!-- 定义插槽 -->
+        <slot name="dashboard"></slot>
         <!-- 通过属性绑定的方式向子组件传递数据
               @自定义事件名=事件监听函数
               在子组件 dashboard 中触发了 delete_hobby 事件来调用 deleteHobby 函数 -->
@@ -41,6 +43,8 @@
       },
       deleteHobby(index) {
         this.hobbies.splice(index, 1);
+        // 删除之后，发布消息，导航组件（左侧）来统计已删除的总数量
+        PubSub.publish('changeNum', 1); // 上面删除的是 1 条
       }
     },
   }
