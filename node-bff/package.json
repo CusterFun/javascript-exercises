@@ -1,0 +1,42 @@
+{
+  "name": "bff",
+  "version": "1.0.0",
+  "description": "E社工BFF层",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon index.js",
+    "prod": "pm2 start index.js",
+    "stop": "pm2 stop index.js",
+    "restart": "pm2 restart index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.jetbrains.space/yak/e-social-work/node-bff.git"
+  },
+  "author": "custer",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/router": "^10.0.0",
+    "axios": "^0.21.1",
+    "ip": "^1.1.5",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-compress": "^5.0.1",
+    "log4js": "^6.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.2",
+    "@babel/plugin-transform-runtime": "^7.14.2",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/register": "^7.13.16",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.3.0"
+  }
+}

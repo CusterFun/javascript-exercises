@@ -1,0 +1,11 @@
+{
+  "extends": ["eslint:recommended", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "env": { "es6": true, "node": true },
+  "rules": {
+    "semi": [2, "always"] // 语句强制分号结尾
+  }
+}
