@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <Index />
+    <div id="routers">
+      <router-link to="/">首页</router-link>
+      <router-link to="/login">登录</router-link>
+      <router-link to="/register">注册</router-link>
+    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
-import Index from "./components/Index.vue";
-
 export default {
   name: "App",
-  components: {
-    Index,
-  },
+  components: {},
 };
 </script>
 

@@ -120,14 +120,18 @@ export default {
     },
   },
 
-  mounted() {
-    let auth = this.$cloudbase.auth();
-    auth.anonymousAuthProvider().signIn();
+  async mounted() {
+    // let auth = this.$cloudbase.auth();
+    // auth.anonymousAuthProvider().signIn();
     // 匿名登录成功检测登录状态isAnonymous字段为true
     // const loginState = await auth.getLoginState();
     // console.log(loginState.isAnonymousAuth); // true
     // https://docs.cloudbase.net/authentication/anonymous.html
 
+    const gls = await this.$auths.getLoginState();
+    if (gls == null) {
+      this.$router.push({ path: "/login" });
+    }
     this.getData();
   },
 };

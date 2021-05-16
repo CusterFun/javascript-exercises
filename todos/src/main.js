@@ -2,6 +2,10 @@ import Vue from "vue";
 import App from "./App.vue";
 import Cloudbase from "@cloudbase/vue-provider";
 
+import router from './router';
+import auths from './assets/auth';
+Vue.use(auths);
+
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
@@ -20,5 +24,6 @@ Vue.use(Cloudbase, {
 });
 
 new Vue({
+  router,
   render: h => h(App)
 }).$mount("#app");
