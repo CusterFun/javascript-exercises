@@ -1,7 +1,10 @@
+const db = require('../model/conn');
+
 class TodoCtl {
   // 获取任务列表
   async find(ctx) {
-    ctx.body = '获取任务列表';
+    const backdb = await db.collection('todo').get();
+    ctx.body = backdb;
   }
 
   // 添加任务
