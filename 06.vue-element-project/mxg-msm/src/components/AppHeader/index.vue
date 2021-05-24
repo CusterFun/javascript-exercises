@@ -21,10 +21,38 @@
   </div>
 </template>
 <script>
+import { logout } from "@/api/login";
+
 export default {
   methods: {
     handleCommand(command) {
-      this.$message("click on item " + command);
+      // this.$message("click on item " + command);
+      switch (command) {
+        case "a":
+          this.$message("点击修改密码");
+          break;
+        case "b":
+          logout(localStorage.getItem("mgx-msm-token")).then((response) => {
+            const resp = response.data;
+            if (resp.flag) {
+              // 退出成功
+              // 清除本地数据
+              localStorage.removeItem("msm-token");
+              localStorage.removeItem("msm-user");
+              // 回到登录页面
+              this.$router.push("/login");
+            } else {
+              this.$message({
+                message: resp.message,
+                type: "warning",
+                duration: 5000, // 弹出停留时间
+              });
+            }
+          });
+          break;
+        default:
+          break;
+      }
     },
   },
 };

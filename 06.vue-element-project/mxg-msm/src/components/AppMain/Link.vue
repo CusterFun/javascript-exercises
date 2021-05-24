@@ -1,5 +1,5 @@
 <template>
-  <el-breadcrumb v-show="$route.path !== '/home'" separator="/">
+  <el-breadcrumb separator="/">
     <el-breadcrumb-item class="line" :to="{ path: $route.path }">{{
       $route.meta.title
     }}</el-breadcrumb-item>
