@@ -1,18 +1,30 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <div class="dashboard-text">
+      {{ name }}
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import api from '@/api/test'
 
 export default {
-  name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
+  data() {
+    return {
+      name: {}
+    }
+  },
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    fetchData() {
+      api.test().then((response) => {
+        console.log('response: ')
+        this.name = response
+      })
+    }
   }
 }
 </script>

@@ -36,7 +36,18 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    before: require('./mock/mock-server.js'),
+    // 解决跨域问题
+    proxy: {
+      // [] 中括号表示 key
+      [process.env.VUE_APP_BASE_API]: {
+        target: ' https://mock.mengxuegu.com/mock/60b5cb881d22662b1b57510b/vue-admin', // 代理转发的基础 url
+        changeOrigin: true, // 开启代理服务器 /dev-api/test
+        pathRewrite: { // 代理转发路径的修改
+          ['^' + process.env.VUE_APP_BASE_API]: '' // 去除 /dev-api 这个路径
+        }
+      }
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -87,7 +98,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
