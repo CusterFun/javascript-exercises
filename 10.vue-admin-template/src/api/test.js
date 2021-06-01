@@ -4,7 +4,10 @@ export default {
   test() {
     return request({
       url: '/test', // /dev-api/test
-      method: 'get'
+      method: 'post',
+      data: {
+        'name': 'custer'
+      }
     })
   }
 }
