@@ -6,11 +6,11 @@
     :before-close="handleClose"
   >
     <el-form ref="formData" :model="formData" label-width="100px" label-position="right" style="width: 300px" status-icon>
-      <el-form-item label="标签名称: ">
-        <el-input />
+      <el-form-item label="标签名称: " prop="name">
+        <el-input v-model="formData.name" />
       </el-form-item>
-      <el-form-item label="分类名称: ">
-        <el-select clearable filterable>
+      <el-form-item label="分类名称: " prop="categoryId">
+        <el-select v-model="formData.categoryId" clearable filterable>
           <el-option v-for="item in categoryList" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
@@ -55,7 +55,11 @@ export default {
   methods: {
     // 提交表单数据
     submitForm(formName) {},
-    handleClose() {}
+    // 关闭弹窗
+    handleClose() {
+      this.$refs['formData'].resetFields() // 表单清空
+      this.remoteClose() // 调用父组件中的方法关闭窗口
+    }
   }
 }
 </script>

@@ -41,7 +41,7 @@
       @current-change="handleCurrentChange"
     />
     <!-- 新增或编辑组件 -->
-    <edit title="新增" :visible="true" :category-list="categoryList" />
+    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" :category-list="categoryList" />
   </div>
 </template>
 
@@ -62,7 +62,12 @@ export default {
         total: 0
       },
       query: {}, // 条件查询
-      categoryList: [] // 正常状态的分类列表数据
+      categoryList: [], // 正常状态的分类列表数据
+      edit: { // 子组件引用属性对象
+        title: '',
+        visible: false,
+        formData: {}
+      }
     }
   },
   created() {
@@ -113,7 +118,17 @@ export default {
       this.fetchData()
     },
     // 打开新增窗口
-    openAdd() {}
+    openAdd() {
+      this.getCategoryList() // 获取最新的分类列表
+      this.edit.visible = true
+      this.edit.title = '新增'
+    },
+    // 关闭弹窗
+    remoteClose() {
+      this.edit.formData = {}
+      this.edit.visible = false
+      this.fetchData()
+    }
   }
 }
 </script>
