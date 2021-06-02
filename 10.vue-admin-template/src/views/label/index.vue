@@ -40,15 +40,19 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+    <!-- 新增或编辑组件 -->
+    <edit title="新增" :visible="true" :category-list="categoryList" />
   </div>
 </template>
 
 <script>
 import api from '@/api/label'
 import categoryApi from '@/api/category'
+import Edit from './edit'
 
 export default {
   name: 'Label',
+  components: { Edit },
   data() {
     return {
       list: [], // 列表数据
