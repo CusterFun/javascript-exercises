@@ -13,7 +13,7 @@
       <el-form-item>
         <el-button icon="el-icon-search" type="primary" @click="queryData">查询</el-button>
         <el-button icon="el-icon-refresh" @click="reloadData">重置</el-button>
-        <el-button icon="el-icon-circle-plus-outline" type="primary">新增</el-button>
+        <el-button icon="el-icon-circle-plus-outline" type="primary" @click="openAdd">新增</el-button>
       </el-form-item>
     </el-form>
     <!-- stripe 带斑马纹 -->
@@ -49,11 +49,14 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+
+    <edit :title="edit.title" :visible="edit.visible" :formData="edit.formData" :remoteClose="remoteClose" />
   </div>
 </template>
 
 <script>
 import api from '@/api/category'
+import Edit from './edit'
 
 const statusOptions = [
   { code: 0, name: '禁用' },
@@ -69,6 +72,7 @@ export default {
       return statusMap[status]
     }
   },
+  components: { Edit },
   data() {
     return {
       list: [], // 列表数据
@@ -78,7 +82,14 @@ export default {
         total: 0 // 总记录数
       },
       query: {}, // 查询条件
-      statusOptions // 状态下拉框数组
+      statusOptions, // 状态下拉框数组
+      edit: {
+        title: '新增',
+        visible: false,
+        formData: {
+
+        }
+      }
     }
   },
   created() {
@@ -118,6 +129,17 @@ export default {
     reloadData() {
       this.query = {}
       this.fetchData()
+    },
+    // 子组件会触发此事件方法来关闭窗口
+    remoteClose() {
+      this.edit.formData = {}
+      this.edit.visible = false
+      this.fetchData()
+    },
+    // 打开新增窗口
+    openAdd() {
+      this.edit.visible = true
+      this.edit.title = '新增'
     }
   }
 }
