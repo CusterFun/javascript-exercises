@@ -20,5 +20,20 @@ export default {
       method: 'post',
       data
     })
+  },
+  // 通过类别 id 进行查询类别详情
+  get(id) {
+    return request({
+      url: `/article/category/${id}`,
+      method: 'get'
+    })
+  },
+  // 更新数据
+  update(data) {
+    return request({
+      url: `/article/category`,
+      method: 'put',
+      data
+    })
   }
 }

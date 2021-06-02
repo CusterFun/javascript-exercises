@@ -104,7 +104,14 @@ export default {
       })
     },
     handlerEdit(id) {
-      console.log('编辑', id)
+      // 通过 id 查询详情
+      api.get(id).then(response => {
+        if (response.code === 20000) {
+          this.edit.formData = response.data // 将查询的详情传递
+          this.edit.title = '编辑'
+          this.edit.visible = true
+        }
+      })
     },
     handlerDelete(id) {
       console.log('删除', id)

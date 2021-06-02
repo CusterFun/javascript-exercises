@@ -87,7 +87,12 @@ export default {
       })
     },
     async submitData() {
-      const response = await api.add(this.formData)
+      let response = null
+      if (this.formData.id) {
+        response = await api.update(this.formData) // 编辑更新操作
+      } else {
+        response = await api.add(this.formData) // 新增数据
+      }
       if (response.code === 20000) {
         this.$message({
           message: '保存成功',
