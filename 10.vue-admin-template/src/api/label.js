@@ -8,5 +8,13 @@ export default {
       method: 'post',
       data: { ...query, current, size } // 合并为一个新对象提交给后台数据接口
     })
+  },
+  // 新增标签
+  add(data) {
+    return request({
+      url: `/article/label`,
+      method: 'post',
+      data
+    })
   }
 }

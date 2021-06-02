@@ -5,7 +5,7 @@
     width="400px"
     :before-close="handleClose"
   >
-    <el-form ref="formData" :model="formData" label-width="100px" label-position="right" style="width: 300px" status-icon>
+    <el-form ref="formData" :rules="rules" :model="formData" label-width="100px" label-position="right" style="width: 300px" status-icon>
       <el-form-item label="标签名称: " prop="name">
         <el-input v-model="formData.name" />
       </el-form-item>
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import api from '@/api/label'
+
 export default {
   components: {},
   props: {
@@ -49,16 +51,48 @@ export default {
   },
   data() {
     return {
+      rules: {
+        name: [ // 校验标签名称
+          { required: true, message: '请输入标签名称', trigger: 'blur' }
+        ],
+        categoryId: [ // 分类
+          { required: true, message: '请选择分类名称', trigger: 'change' }
+        ]
+      }
     }
   },
 
   methods: {
     // 提交表单数据
-    submitForm(formName) {},
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.submitData() // 校验通过，提交表单数据
+        } else {
+          return false
+        }
+      })
+    },
     // 关闭弹窗
     handleClose() {
       this.$refs['formData'].resetFields() // 表单清空
       this.remoteClose() // 调用父组件中的方法关闭窗口
+    },
+    // 调用接口提交数据
+    async submitData() {
+      const response = await api.add(this.formData)
+      if (response.code === 20000) {
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+        this.handleClose() // 关闭窗口
+      } else {
+        this.$message({
+          message: '保存失败',
+          type: 'error'
+        })
+      }
     }
   }
 }
