@@ -44,10 +44,11 @@
           {{ getFormate(scope.row.updateDate) }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作">
+      <el-table-column align="left" label="操作">
         <template slot-scope="scope">
-          <el-button type="info" size="mini" @click="handlerEdit(scope.row.id)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handlerDelete(scope.row.id)">删除</el-button>
+          <!-- 审核：只有 status === 1 才显示，其他不显示，删除：只有 status !== 0 才显示 -->
+          <el-button v-if="scope.row.status===1" type="success" size="mini" @click="openAudit(scope.row.id)">审核</el-button>
+          <el-button v-if="scope.row.status!==0" type="danger" size="mini" @click="handlerDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,12 +62,15 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+
+    <audit :id="audit.id" :title="audit.title" :visible="audit.visible" :remote-close="remoteClose" :is-audit="audit.isAudit" />
   </div>
 </template>
 
 <script>
 import api from '@/api/article'
 import { format } from '@/utils/date' // 格式化日期
+import Audit from './audit'
 
 const statusOptions = [
   { code: 1, name: '未审核' },
@@ -77,6 +81,7 @@ const statusOptions = [
 
 export default {
   name: 'Article',
+  components: { Audit },
   data() {
     return {
       list: [],
@@ -86,7 +91,13 @@ export default {
         total: 0
       },
       query: {}, // 查询条件
-      statusOptions // 状态下拉框数组
+      statusOptions, // 状态下拉框数组
+      audit: { // 审核子组件传递的对象属性
+        title: '',
+        visible: false,
+        id: null, // 文章 id
+        isAudit: true // 是否打开的是审核页面，true 为审核，false 为详情
+      }
     }
   },
   created() {
@@ -97,9 +108,6 @@ export default {
       const { data } = await api.getList(this.query, this.page.current, this.page.size)
       this.list = data.records
       this.page.total = data.total
-    },
-    handlerEdit(id) {
-      console.log('编辑', id)
     },
     handlerDelete(id) {
       console.log('删除', id)
@@ -123,8 +131,21 @@ export default {
       this.page.current = 1
       this.fetchData()
     },
+    // 刷新重置条件查询
     reloadData() {
       this.query = {}
+      this.fetchData()
+    },
+    // 打开审核文章窗口
+    openAudit(id) {
+      this.audit.id = id // 可以把 id 传递给子组件调用接口
+      this.audit.isAudit = true // 标识为审核页面
+      this.audit.visible = true
+      this.audit.title = '审核文章'
+    },
+    // 关闭审核文章窗口
+    remoteClose() {
+      this.audit.visible = false
       this.fetchData()
     }
   }
