@@ -16,5 +16,20 @@ export default {
       method: 'post',
       data
     })
+  },
+  // 查询标签详情
+  getById(id) {
+    return request({
+      url: `/article/label/${id}`,
+      method: 'get'
+    })
+  },
+  // 更新标签
+  update(data) {
+    return request({
+      url: `/article/label`,
+      method: 'put',
+      data
+    })
   }
 }
