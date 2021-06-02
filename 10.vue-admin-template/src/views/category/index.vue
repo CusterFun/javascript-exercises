@@ -23,6 +23,16 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页组件 -->
+    <el-pagination
+      :current-page="page.current"
+      :page-sizes="[10, 20, 50]"
+      :page-size="page.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
@@ -64,6 +74,16 @@ export default {
     },
     handlerDelete(id) {
       console.log('删除', id)
+    },
+    // val 是切换之后每页显示多少条数据
+    handleSizeChange(val) {
+      this.page.size = val
+      this.fetchData()
+    },
+    // 当页码改变后触发此方法，val 是当前点击或输入的页码
+    handleCurrentChange(val) {
+      this.page.current = val
+      this.fetchData()
     }
   }
 }
