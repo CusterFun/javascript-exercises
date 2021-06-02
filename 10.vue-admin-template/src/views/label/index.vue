@@ -92,7 +92,20 @@ export default {
       })
     },
     handlerDelete(id) {
-      console.log('删除', id)
+      this.$confirm('确认删除这条记录吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => { // 发送删除请求
+        api.deleteById(id).then(response => {
+          this.$message({ // 处理响应结果提示
+            type: response.code === 20000 ? 'success' : 'error',
+            message: response.message
+          })
+        })
+        // 刷新列表数据
+        this.fetchData()
+      }).catch(() => {})
     },
     // 每页显示多少条数据改变后触发
     handleSizeChange(val) {

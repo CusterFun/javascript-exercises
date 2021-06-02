@@ -31,5 +31,12 @@ export default {
       method: 'put',
       data
     })
+  },
+  // 通过标签 id 删除标签信息
+  deleteById(id) {
+    return request({
+      url: `/article/label/${id}`,
+      method: 'delete'
+    })
   }
 }
