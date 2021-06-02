@@ -35,5 +35,12 @@ export default {
       method: 'put',
       data
     })
+  },
+  // 通过类别 id 进行删除类别数据
+  delete(id) {
+    return request({
+      url: `/article/category/${id}`,
+      method: 'delete'
+    })
   }
 }

@@ -114,7 +114,26 @@ export default {
       })
     },
     handlerDelete(id) {
-      console.log('删除', id)
+      this.$confirm('确认删除该记录吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 发送删除请求
+        api.delete(id).then(response => {
+          // 处理响应结果提示
+          this.$message({
+            type: response.code === 20000 ? 'success' : 'error',
+            message: response.message
+          })
+        })
+        this.fetchData() // 刷新列表
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     },
     // val 是切换之后每页显示多少条数据
     handleSizeChange(val) {
