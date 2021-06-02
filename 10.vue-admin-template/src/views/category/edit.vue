@@ -5,7 +5,7 @@
     width="500px"
     :before-close="handleClose"
   >
-    <el-form ref="formData" :model="formData" label-width="100px" label-position="right" style="width: 400px" status-icon>
+    <el-form ref="formData" :rules="rules" :model="formData" label-width="100px" label-position="right" style="width: 400px" status-icon>
       <el-form-item label="分类名称: " prop="name">
         <el-input v-model="formData.name" />
       </el-form-item>
@@ -43,13 +43,26 @@ export default {
     },
     formData: { // 提交表单数据
       type: Object,
-      default: () => {}
+      default: () => {} // 接收的数据类型为对象的默认值
     },
-    remoteClose: Function // 触发父组件方法,用于关闭窗口
+    remoteClose: {
+      type: Function, // 触发父组件方法,用于关闭窗口
+      default: () => () => {} // 接收的数据类型为函数的默认值 () => [] 接收的数据类型为数组的默认值
+    }
   },
   data() {
     return {
-
+      rules: {
+        name: [
+          { required: true, message: '请输入分类名称', trigger: 'blur' }
+        ],
+        status: [
+          { required: true, message: '请选择状态', trigger: 'change' }
+        ],
+        sort: [
+          { required: true, message: '请输入排序号', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -60,7 +73,16 @@ export default {
       this.remoteClose()
     },
     // 提交表单
-    submitForm(formName) {}
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert('submit!')
+        } else {
+          console.log('error submit!')
+          return false
+        }
+      })
+    }
   }
 }
 </script>

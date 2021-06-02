@@ -50,7 +50,7 @@
       @current-change="handleCurrentChange"
     />
 
-    <edit :title="edit.title" :visible="edit.visible" :formData="edit.formData" :remoteClose="remoteClose" />
+    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
   </div>
 </template>
 
