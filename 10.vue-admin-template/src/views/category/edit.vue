@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import api from '@/api/category'
+
 export default {
   components: {},
   props: {
@@ -76,12 +78,29 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          // 校验通过提交表单数据
+          this.submitData()
         } else {
           console.log('error submit!')
           return false
         }
       })
+    },
+    async submitData() {
+      const response = await api.add(this.formData)
+      if (response.code === 20000) {
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+        // 关闭窗口
+        this.handleClose()
+      } else {
+        this.$message({
+          message: '保存失败',
+          type: 'error'
+        })
+      }
     }
   }
 }

@@ -12,5 +12,13 @@ export default {
         size
       }
     })
+  },
+  // 新增类别
+  add(data) {
+    return request({
+      url: `/article/category`,
+      method: 'post',
+      data
+    })
   }
 }
