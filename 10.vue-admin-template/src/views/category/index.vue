@@ -1,5 +1,21 @@
 <template>
   <div class="app-container">
+    <!-- 条件查询 -->
+    <el-form :inline="true" :model="query" size="mini">
+      <el-form-item label="分类名称: ">
+        <el-input v-model.trim="query.name" />
+      </el-form-item>
+      <el-form-item label="状态: ">
+        <el-select v-model="query.status" clearable filterable style="width:85px">
+          <el-option v-for="item in statusOptions" :key="item.code" :label="item.name" :value="item.code" />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="el-icon-search" type="primary" @click="queryData">查询</el-button>
+        <el-button icon="el-icon-refresh" @click="reloadData">重置</el-button>
+        <el-button icon="el-icon-circle-plus-outline" type="primary">新增</el-button>
+      </el-form-item>
+    </el-form>
     <!-- stripe 带斑马纹 -->
     <el-table
       :data="list"
@@ -29,7 +45,7 @@
       :page-sizes="[10, 20, 50]"
       :page-size="page.size"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
+      :total="page.total"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
@@ -38,6 +54,12 @@
 
 <script>
 import api from '@/api/category'
+
+const statusOptions = [
+  { code: 0, name: '禁用' },
+  { code: 1, name: '正常' }
+]
+
 export default {
   name: 'Category',
   filters: {
@@ -55,7 +77,8 @@ export default {
         size: 20, // 每页多少条数据
         total: 0 // 总记录数
       },
-      query: {} // 查询条件
+      query: {}, // 查询条件
+      statusOptions // 状态下拉框数组
     }
   },
   created() {
@@ -66,7 +89,7 @@ export default {
       api.getList(this.query, this.page.current, this.page.size).then(response => {
         console.log('response', response)
         this.list = response.data.records // 列表数据
-        this.total = response.data.total // 获取总记录数据
+        this.page.total = response.data.total // 获取总记录数据
       })
     },
     handlerEdit(id) {
@@ -83,6 +106,17 @@ export default {
     // 当页码改变后触发此方法，val 是当前点击或输入的页码
     handleCurrentChange(val) {
       this.page.current = val
+      this.fetchData()
+    },
+    // 条件查询
+    queryData() {
+      // 将页码变为1，第1页
+      this.page.current = 1
+      this.fetchData()
+    },
+    // 重置查询
+    reloadData() {
+      this.query = {}
       this.fetchData()
     }
   }
