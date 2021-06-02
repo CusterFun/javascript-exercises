@@ -1,5 +1,20 @@
 <template>
   <div class="app-container">
+    <el-form :inline="true" :model="query" size="mini">
+      <el-form-item label="文章标题: ">
+        <el-input v-model.trim="query.title" />
+      </el-form-item>
+      <el-form-item label="状态: ">
+        <el-select v-model="query.status" clearable filterable style="width: 120px">
+          <el-option v-for="item in statusOptions" :key="item.code" :label="item.name" :value="item.code" />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="el-icon-search" type="primary" @click="queryData">查询</el-button>
+        <el-button icon="el-icon-refresh" @click="reloadData">重置</el-button>
+      </el-form-item>
+    </el-form>
+
     <el-table
       :data="list"
       border
@@ -36,12 +51,29 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      :current-page="page.current"
+      :page-sizes="[10, 20, 50]"
+      :page-size="page.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="page.total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
 <script>
 import api from '@/api/article'
 import { format } from '@/utils/date' // 格式化日期
+
+const statusOptions = [
+  { code: 1, name: '未审核' },
+  { code: 2, name: '已审核' },
+  { code: 3, name: '审核未通过' },
+  { code: 0, name: '已删除' }
+]
 
 export default {
   name: 'Article',
@@ -53,7 +85,8 @@ export default {
         size: 20,
         total: 0
       },
-      query: {} // 查询条件
+      query: {}, // 查询条件
+      statusOptions // 状态下拉框数组
     }
   },
   created() {
@@ -74,6 +107,25 @@ export default {
     // 组件模板中调用此方法格式化日期
     getFormate(date) {
       return format(date)
+    },
+    // 当每页显示多少条数据改变后触发
+    handleSizeChange(val) {
+      this.page.size = val
+      this.fetchData()
+    },
+    // 切换页码时触发
+    handleCurrentChange(val) {
+      this.page.current = val
+      this.fetchData()
+    },
+    // 条件查询
+    queryData() {
+      this.page.current = 1
+      this.fetchData()
+    },
+    reloadData() {
+      this.query = {}
+      this.fetchData()
     }
   }
 }
