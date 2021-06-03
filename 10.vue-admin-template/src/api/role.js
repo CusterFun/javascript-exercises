@@ -8,5 +8,13 @@ export default {
       method: 'post',
       data: { ...query, current, size }
     })
+  },
+  // 新增角色
+  add(data) {
+    return request({
+      url: `/system/role`,
+      method: 'post',
+      data
+    })
   }
 }

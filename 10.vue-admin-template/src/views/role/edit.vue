@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import api from '@/api/role'
+
 export default {
   components: {},
   props: {
@@ -62,12 +64,33 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 校验通过提交表单数据
-          // this.submitData()
+          this.submitData()
         } else {
           console.log('error submit!')
           return false
         }
       })
+    },
+    async submitData() {
+      let response = null
+      if (this.formData.id) {
+        response = await api.update(this.formData) // 编辑更新操作
+      } else {
+        response = await api.add(this.formData) // 新增数据
+      }
+      if (response.code === 20000) {
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+        // 关闭窗口
+        this.handleClose()
+      } else {
+        this.$message({
+          message: '保存失败',
+          type: 'error'
+        })
+      }
     }
   }
 }
