@@ -8,5 +8,13 @@ export default {
       method: 'post',
       data: { ...query, current, size }
     })
+  },
+  // 新增广告
+  add(data) {
+    return request({
+      url: `/article/advert`,
+      method: 'post',
+      data
+    })
   }
 }

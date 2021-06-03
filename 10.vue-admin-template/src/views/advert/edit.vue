@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title="title" :visible.sync="visible" width="600px" :before-close="handleClose">
-    <el-form ref="formData" :model="formData" label-width="100px" label-position="right" style="width: 400px" status-icon>
+    <el-form ref="formData" :rules="rules" :model="formData" label-width="100px" label-position="right" style="width: 400px" status-icon>
       <el-form-item label="广告图片: " prop="imageUrl">
         <!-- class: 样式 action: 上传图片提交的地址 show-file-list: 单张图片 -->
         <el-upload
@@ -50,6 +50,7 @@
 
 <script>
 import commonApi from '@/api/common'
+import api from '@/api/advert'
 
 export default {
   components: {},
@@ -77,7 +78,29 @@ export default {
   },
   data() {
     return {
-
+      rules: {
+        imageUrl: [
+          { required: true, message: '请上传广告图片', trigger: 'blur' }
+        ],
+        title: [
+          { required: true, message: '请输入广告标题', trigger: 'blur' }
+        ],
+        advertUrl: [
+          { required: true, message: '请输入广告链接', trigger: 'blur' }
+        ],
+        advertTarget: [
+          { required: true, message: '请选择打开方式', trigger: 'change' }
+        ],
+        status: [
+          { required: true, message: '请选择状态', trigger: 'change' }
+        ],
+        position: [
+          { required: true, message: '请输入广告位置', trigger: 'blur' }
+        ],
+        sort: [
+          { required: true, message: '请输入排序号', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
@@ -100,8 +123,20 @@ export default {
       })
     },
     async submitData() {
-      this.edit.visible = true
-      this.edit.title = '新增'
+      const response = await api.add(this.formData) // 新增数据
+      if (response.code === 20000) {
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+        // 关闭窗口
+        this.handleClose()
+      } else {
+        this.$message({
+          message: '保存失败',
+          type: 'error'
+        })
+      }
     },
     // 上传图片，file 上传的图片对象
     uploadCoverImg(file) {
