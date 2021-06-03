@@ -29,5 +29,12 @@ export default {
       url: `/article/article/audit/fail/${id}`,
       method: 'get'
     })
+  },
+  // 根据ID删除文章
+  delteById(id) {
+    return request({
+      url: `/article/article/${id}`,
+      method: 'delete'
+    })
   }
 }

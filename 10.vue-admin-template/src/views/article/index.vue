@@ -111,7 +111,18 @@ export default {
       this.page.total = data.total
     },
     handlerDelete(id) {
-      console.log('删除', id)
+      this.$confirm('确认删除这条记录吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const response = await api.delteById(id) // 发送删除请求
+        this.$message({
+          type: response.code === 20000 ? 'success' : 'error',
+          message: response.message
+        })
+        this.fetchData() // 刷新数据
+      }).catch(() => {})
     },
     // 组件模板中调用此方法格式化日期
     getFormate(date) {
