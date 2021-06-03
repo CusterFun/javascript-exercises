@@ -57,11 +57,14 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+
+    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
   </div>
 </template>
 
 <script>
 import api from '@/api/advert'
+import Edit from './edit'
 
 const statusOptions = [
   { code: 0, name: '禁用' },
@@ -77,6 +80,7 @@ export default {
       return statusMap[status]
     }
   },
+  components: { Edit },
   data() {
     return {
       list: [],
@@ -86,7 +90,14 @@ export default {
         total: 0
       },
       query: {}, // 查询条件
-      statusOptions // 状态下拉框数组
+      statusOptions, // 状态下拉框数组
+      edit: {
+        title: '新增',
+        visible: false,
+        formData: {
+          imageUrl: null // 不声明，上传后无法回显展示图片
+        }
+      }
     }
   },
   created() {
@@ -121,8 +132,17 @@ export default {
       this.query = {}
       this.fetchData()
     },
-    // 新增数据
-    openAdd() {}
+    // 子组件会触发此事件方法来关闭窗口
+    remoteClose() {
+      this.edit.formData = { imageUrl: null }
+      this.edit.visible = false
+      this.fetchData()
+    },
+    // 打开窗口，新增数据
+    openAdd() {
+      this.edit.visible = true
+      this.edit.title = '新增'
+    }
   }
 }
 </script>
