@@ -45,18 +45,28 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 新增或者编辑组件 -->
+    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
   </div>
 </template>
 
 <script>
 import api from '@/api/menu'
+import Edit from './edit'
 
 export default {
   name: 'Menu',
+  components: { Edit },
   data() {
     return {
       list: [], // 列表数据
-      query: {} // 查询条件
+      query: {}, // 查询条件
+      edit: {
+        title: '',
+        visible: false,
+        formData: {}
+      }
     }
   },
   created() {
@@ -67,8 +77,6 @@ export default {
       const { data } = await api.getList(this.query)
       this.list = data
     },
-    // 新增菜单,id 作为菜单的 parentId
-    handlerAdd(id) {},
     // 编辑菜单
     handlerEdit(id) {},
     // 删除菜单
@@ -76,6 +84,19 @@ export default {
     // 重置条件查询
     reloadData() {
       this.query = {}
+      this.fetchData()
+    },
+    // 新增菜单,id 作为菜单的 parentId
+    handlerAdd(id) {
+      // id = 0 是在条件查询的地方点击的，是新增一级菜单，否则新增的是某菜单下的子菜单
+      this.edit.formData.parentId = id
+      this.edit.title = '新增'
+      this.edit.visible = true
+    },
+    // 关闭弹窗
+    remoteClose() {
+      this.edit.formData = {}
+      this.edit.visible = false
       this.fetchData()
     }
   }
