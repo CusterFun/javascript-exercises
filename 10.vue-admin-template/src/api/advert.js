@@ -31,5 +31,12 @@ export default {
       method: 'put',
       data
     })
+  },
+  // 根据 id 删除广告
+  deleteById(id) {
+    return request({
+      url: `/article/advert/${id}`,
+      method: 'delete'
+    })
   }
 }

@@ -119,7 +119,20 @@ export default {
         this.edit.title = '编辑'
       }
     },
-    handlerDelete(id) { console.log('删除', id) },
+    handlerDelete(id) {
+      this.$confirm('确认删除这条记录吗? ', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const response = await api.deleteById(id) // 发送删除请求
+        this.$message({ // 处理相应结果提示
+          type: response.code === 20000 ? 'success' : 'error',
+          message: response.message
+        })
+        this.fetchData() // 刷新列表数据
+      }).catch(() => {})
+    },
     // val 是切换之后每页显示多少条数据
     handleSizeChange(val) {
       this.page.size = val
