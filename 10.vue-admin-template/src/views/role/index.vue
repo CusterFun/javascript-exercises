@@ -76,7 +76,12 @@ export default {
       this.page.total = data.total
     },
     handlerPermission(id) {},
-    handlerEdit(id) {},
+    async handlerEdit(id) {
+      const { data } = await api.getById(id) // 查询角色详情
+      this.edit.formData = data
+      this.edit.title = '编辑'
+      this.edit.visible = true
+    },
     handlerDelete(id) {},
     // val 是切换之后每页显示多少条数据
     handleSizeChange(val) {

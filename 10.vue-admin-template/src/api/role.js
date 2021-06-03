@@ -16,5 +16,20 @@ export default {
       method: 'post',
       data
     })
+  },
+  // 通过角色ID查询数据接口
+  getById(id) {
+    return request({
+      url: `/system/role/${id}`,
+      method: 'get'
+    })
+  },
+  // 角色数据更新
+  update(data) {
+    return request({
+      url: `/system/role`,
+      method: 'put',
+      data
+    })
   }
 }
