@@ -40,16 +40,18 @@
     />
 
     <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
+    <permission title="分配权限" :visible="per.visible" :remote-close="remotePerClose" />
   </div>
 </template>
 
 <script>
 import api from '@/api/role'
 import Edit from './edit'
+import Permission from './permission'
 
 export default {
   name: 'Role',
-  components: { Edit },
+  components: { Edit, Permission },
   data() {
     return {
       list: [],
@@ -63,7 +65,8 @@ export default {
         title: '',
         visible: false,
         formData: {}
-      }
+      },
+      per: { visible: false }
     }
   },
   created() {
@@ -75,7 +78,6 @@ export default {
       this.list = data.records
       this.page.total = data.total
     },
-    handlerPermission(id) {},
     async handlerEdit(id) {
       const { data } = await api.getById(id) // 查询角色详情
       this.edit.formData = data
@@ -133,6 +135,15 @@ export default {
     remoteClose() {
       this.edit.formData = {}
       this.edit.visible = false
+      this.fetchData()
+    },
+    // 弹出分配权限窗口
+    handlerPermission(id) {
+      this.per.visible = true
+    },
+    // 关闭分配权限弹窗
+    remotePerClose() {
+      this.per.visible = false
       this.fetchData()
     }
   }
