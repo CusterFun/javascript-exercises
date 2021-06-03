@@ -88,7 +88,28 @@ export default {
       })
     },
     // 删除菜单
-    handlerDelete(id) {},
+    handlerDelete(id) {
+      this.$confirm('确认删除当前节点与子节点记录吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 发送删除请求
+        api.deleteById(id).then(response => {
+          // 处理响应结果提示
+          this.$message({
+            type: response.code === 20000 ? 'success' : 'error',
+            message: response.message
+          })
+        })
+        this.fetchData() // 刷新列表
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     // 重置条件查询
     reloadData() {
       this.query = {}

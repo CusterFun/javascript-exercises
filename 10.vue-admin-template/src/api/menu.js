@@ -31,5 +31,12 @@ export default {
       method: 'put',
       data
     })
+  },
+  // 删除菜单
+  deleteById(id) {
+    return request({
+      url: `/system/menu/${id}`,
+      method: 'delete'
+    })
   }
 }
