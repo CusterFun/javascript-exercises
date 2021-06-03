@@ -15,5 +15,19 @@ export default {
       url: `/article/article/${id}`,
       method: 'get'
     })
+  },
+  // 文章审核通过
+  auditSuccess(id) {
+    return request({
+      url: `/article/article/audit/success/${id}`,
+      method: 'get'
+    })
+  },
+  // 文章审核未通过
+  auditFail(id) {
+    return request({
+      url: `/article/article/audit/fail/${id}`,
+      method: 'get'
+    })
   }
 }

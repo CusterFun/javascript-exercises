@@ -80,10 +80,32 @@ export default {
       this.remoteClose() // 触发父组件关闭窗口
     },
     auditSuccess() { // 审核通过触发的方法
-      console.log('审核通过触发的方法')
+      this.$confirm('确认审核通过吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const response = await api.auditSuccess(this.id)
+        this.$message({
+          type: response.code === 20000 ? 'success' : 'error',
+          message: response.message
+        })
+        this.remoteClose() // 关闭弹窗
+      }).catch(() => {})
     },
     auditFailure() { // 审核不通过触发的方法
-      console.log('审核不通过触发的方法')
+      this.$confirm('确认审核不通过吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async() => {
+        const response = await api.auditFail(this.id)
+        this.$message({
+          type: response.code === 20000 ? 'success' : 'error',
+          message: response.message
+        })
+        this.remoteClose() // 关闭弹窗
+      }).catch(() => {})
     },
     async getArticleById() { // 查询文章详情
       const { data } = await api.getById(this.id)
