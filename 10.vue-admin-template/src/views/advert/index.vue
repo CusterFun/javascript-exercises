@@ -58,7 +58,7 @@
       @current-change="handleCurrentChange"
     />
 
-    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" :old-image-url="oldImageUrl" />
+    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" :old-image-url="edit.oldImageUrl" />
   </div>
 </template>
 
@@ -110,7 +110,15 @@ export default {
       this.page.total = data.total
       this.list = data.records
     },
-    handlerEdit(id) { console.log('编辑', id) },
+    async handlerEdit(id) {
+      const response = await api.getById(id)
+      if (response.code === 20000) {
+        this.edit.formData = response.data
+        this.edit.oldImageUrl = response.data.imageUrl // 保存修改之前的图片url
+        this.edit.visible = true
+        this.edit.title = '编辑'
+      }
+    },
     handlerDelete(id) { console.log('删除', id) },
     // val 是切换之后每页显示多少条数据
     handleSizeChange(val) {

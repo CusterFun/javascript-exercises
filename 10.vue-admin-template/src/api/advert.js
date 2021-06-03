@@ -16,5 +16,20 @@ export default {
       method: 'post',
       data
     })
+  },
+  // 通过广告id查询数据接口
+  getById(id) {
+    return request({
+      url: `/article/advert/${id}`,
+      method: 'get'
+    })
+  },
+  // 广告数据更新
+  update(data) {
+    return request({
+      url: `/article/advert`,
+      method: 'put',
+      data
+    })
   }
 }
