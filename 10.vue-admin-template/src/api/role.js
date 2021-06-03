@@ -31,5 +31,12 @@ export default {
       method: 'put',
       data
     })
+  },
+  // 根据ID删除角色
+  deleteById(id) {
+    return request({
+      url: `/system/role/${id}`,
+      method: 'delete'
+    })
   }
 }
