@@ -5,7 +5,27 @@
     width="70%"
     :before-close="handleClose"
   >
-    审核文章 {{ id }} <br> {{ isAudit }}
+    <el-form ref="formData" :model="formData" label-width="100px" label-position="right">
+      <el-form-item label="标题: ">
+        <el-input v-model="formData.title" readonly />
+      </el-form-item>
+      <el-form-item label="标签: " />
+      <el-form-item label="封面: "><img :src="formData.imageUrl" style="width: 178px; height:178px; display:block"></el-form-item>
+      <el-form-item label="是否公开: ">
+        <el-radio-group v-model="formData.ispublic" disabled>
+          <el-radio :label="1">公开</el-radio>
+          <el-radio :label="0">不公开</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="简介">
+        <el-input v-model="formData.summary" type="textarea" readonly />
+      </el-form-item>
+      <el-form-item label="内容" />
+      <el-form-item v-if="isAudit" align="center">
+        <el-button type="primary" @click="auditSuccess">审核通过</el-button>
+        <el-button type="danger" @click="auditFailure">审核不通过</el-button>
+      </el-form-item>
+    </el-form>
   </el-dialog>
 </template>
 
@@ -36,11 +56,18 @@ export default {
   },
   data() {
     return {
+      formData: {} // 查询到的文章详情
     }
   },
   methods: {
     handleClose() { // 关闭窗口
       this.remoteClose() // 触发父组件关闭窗口
+    },
+    auditSuccess() { // 审核通过触发的方法
+      console.log('审核通过触发的方法')
+    },
+    auditFailure() { // 审核不通过触发的方法
+      console.log('审核不通过触发的方法')
     }
   }
 }
