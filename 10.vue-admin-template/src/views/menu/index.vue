@@ -1,5 +1,16 @@
 <template>
   <div class="app-container">
+    <el-form :inline="true" :model="query" size="mini">
+      <el-form-item label="菜单名称: ">
+        <el-input v-model.trim="query.name" />
+      </el-form-item>
+      <el-form-item>
+        <el-button icon="el-icon-search" type="primary" @click="fetchData">查询</el-button>
+        <el-button icon="el-icon-refresh" @click="reloadData">重置</el-button>
+        <el-button icon="el-icon-circle-plus-outline" type="primary" @click="handlerAdd(0)">新增</el-button>
+      </el-form-item>
+    </el-form>
+
     <!-- row-key="id" 指定唯一标识的属性名，其中数据要包含 children 才会被渲染为树状 -->
     <el-table
       row-key="id"
@@ -55,6 +66,17 @@ export default {
     async fetchData() {
       const { data } = await api.getList(this.query)
       this.list = data
+    },
+    // 新增菜单,id 作为菜单的 parentId
+    handlerAdd(id) {},
+    // 编辑菜单
+    handlerEdit(id) {},
+    // 删除菜单
+    handlerDelete(id) {},
+    // 重置条件查询
+    reloadData() {
+      this.query = {}
+      this.fetchData()
     }
   }
 }
