@@ -38,14 +38,18 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+
+    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
   </div>
 </template>
 
 <script>
 import api from '@/api/role'
+import Edit from './edit'
 
 export default {
   name: 'Role',
+  components: { Edit },
   data() {
     return {
       list: [],
@@ -54,7 +58,12 @@ export default {
         size: 20,
         total: 0
       },
-      query: {}
+      query: {},
+      edit: {
+        title: '',
+        visible: false,
+        formData: {}
+      }
     }
   },
   created() {
@@ -91,7 +100,14 @@ export default {
     },
     // 打开窗口，新增角色
     openAdd() {
-
+      this.edit.visible = true
+      this.edit.title = '新增'
+    },
+    // 子组件会触发此事件方法来关闭窗口
+    remoteClose() {
+      this.edit.formData = {}
+      this.edit.visible = false
+      this.fetchData()
     }
   }
 }
