@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import commonApi from '@/api/common'
 
 export default {
   components: {},
@@ -64,6 +65,10 @@ export default {
     formData: { // 提交表单数据
       type: Object,
       default: () => {} // 接收的数据类型为对象的默认值
+    },
+    oldImageUrl: { // 编辑时，查询出来的那张图片地址
+      type: String,
+      default: ''
     },
     remoteClose: {
       type: Function, // 触发父组件方法,用于关闭窗口
@@ -101,6 +106,25 @@ export default {
     // 上传图片，file 上传的图片对象
     uploadCoverImg(file) {
       console.log('上传图片对象: ', file)
+      const data = new FormData()
+      data.append('file', file.file)
+      commonApi.uploadImage(data).then((response) => {
+        this.deleteImg() // 将之前的图片删除
+        this.formData.imageUrl = response.data // 回显图片
+      }).catch((error) => {
+        this.$message({
+          type: 'error',
+          message: `上传失败,${error.message}`
+        })
+      })
+    },
+    // 删除图片
+    deleteImg() {
+      // 如果之前有图片，则删除之前的图片
+      if (this.formData.imageUrl && this.formData.image !== this.oldImageUrl) {
+        // 发送请求删除图片
+        commonApi.deleteImage(this.formData.imageUrl)
+      }
     }
   }
 }

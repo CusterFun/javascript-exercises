@@ -58,7 +58,7 @@
       @current-change="handleCurrentChange"
     />
 
-    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
+    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" :old-image-url="oldImageUrl" />
   </div>
 </template>
 
@@ -96,7 +96,8 @@ export default {
         visible: false,
         formData: {
           imageUrl: null // 不声明，上传后无法回显展示图片
-        }
+        },
+        oldImageUrl: null // 编辑时，查询出来的原始图片
       }
     }
   },
