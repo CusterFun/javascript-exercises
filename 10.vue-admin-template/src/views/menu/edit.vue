@@ -5,7 +5,7 @@
     width="500px"
     :before-close="handleClose"
   >
-    <el-form ref="formData" :model="formData" label-width="100px" label-position="right" style="width: 400px" status-icon>
+    <el-form ref="formData" :rules="rules" :model="formData" label-width="100px" label-position="right" style="width: 400px" status-icon>
       <el-form-item label="类型: " prop="type">
         <el-radio-group v-model="formData.type">
           <el-radio :label="1">目录</el-radio>
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import api from '@/api/menu'
+
 export default {
   components: {},
   props: {
@@ -62,10 +64,45 @@ export default {
   },
   data() {
     return {
+      rules: {
+        type: [
+          { required: true, message: '请选择类型', trigger: 'change' }
+        ],
+        name: [
+          { required: true, message: '请输入菜单名称', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入权限标识', trigger: 'blur' }
+        ]
+      }
     }
   },
   methods: {
-    submitForm() {},
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // 校验通过提交表单数据
+          // 判断类型是否为按钮，按钮则不提交：请求地址，图标, 将这两个属性设置为 null
+          if (this.formData.type === 3) {
+            this.formData.url = ''
+            this.formData.icon = ''
+          }
+          this.submitData() // 提交数据
+        } else {
+          console.log('error submit!')
+          return false
+        }
+      })
+    },
+    async submitData() {
+      const response = await api.add(this.formData)
+      if (response.code === 20000) {
+        this.$message({ type: 'success', message: '保存成功' }) // 提交成功
+        this.handleClose() // 关闭窗口
+      } else {
+        this.$message({ type: 'error', message: '保存失败' })
+      }
+    },
     handleClose() {
       this.$refs['formData'].resetFields()
       this.remoteClose()
