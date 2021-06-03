@@ -22,7 +22,7 @@
       <el-form-item label="简介">
         <el-input v-model="formData.summary" type="textarea" readonly />
       </el-form-item>
-      <el-form-item label="内容" />
+      <el-form-item label="内容"><mavonEditor v-model="formData.mdContent" :editable="false" /></el-form-item>
       <el-form-item v-if="isAudit" align="center">
         <el-button type="primary" @click="auditSuccess">审核通过</el-button>
         <el-button type="danger" @click="auditFailure">审核不通过</el-button>
@@ -34,9 +34,11 @@
 <script>
 import api from '@/api/article'
 import categoryApi from '@/api/category'
+import { mavonEditor } from 'mavon-editor' // 一定不要少了大括号
+import 'mavon-editor/dist/css/index.css' // 引入 mavonEditor 组件和样式
 
 export default {
-  components: {},
+  components: { mavonEditor }, // 注册为子组件
   props: {
     id: { // 文章id
       type: Number,
