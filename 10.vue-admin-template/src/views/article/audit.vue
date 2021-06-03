@@ -9,7 +9,9 @@
       <el-form-item label="标题: ">
         <el-input v-model="formData.title" readonly />
       </el-form-item>
-      <el-form-item label="标签: " />
+      <el-form-item label="标签: ">
+        <el-cascader v-model="formData.labelIds" disabled :options="labelOptions" :props="{ multiple: true, emitPath: false, children: 'labelList', value: 'id', label: 'name' }" clearable style="display:block" />
+      </el-form-item>
       <el-form-item label="封面: "><img :src="formData.imageUrl" style="width: 178px; height:178px; display:block"></el-form-item>
       <el-form-item label="是否公开: ">
         <el-radio-group v-model="formData.ispublic" disabled>
@@ -31,6 +33,7 @@
 
 <script>
 import api from '@/api/article'
+import categoryApi from '@/api/category'
 
 export default {
   components: {},
@@ -58,13 +61,15 @@ export default {
   },
   data() {
     return {
-      formData: {} // 查询到的文章详情
+      formData: {}, // 查询到的文章详情
+      labelOptions: [] // 渲染分类标签级联下拉框
     }
   },
   watch: { // 监听
     visible(val) { // 监听 visible 的变化,将改变之后的值作为参数传入
-      if (val) { // val 为 true,打开窗口，查询文章详情
-        this.getArticleById()
+      if (val) { // val 为 true,打开窗口
+        this.getLabelOptions() // 获取所有分类和标签
+        this.getArticleById() // 获取文章详情
       }
     }
   },
@@ -81,6 +86,10 @@ export default {
     async getArticleById() { // 查询文章详情
       const { data } = await api.getById(this.id)
       this.formData = data
+    },
+    async getLabelOptions() {
+      const { data } = await categoryApi.getCategoryAndLabel()
+      this.labelOptions = data
     }
   }
 }
