@@ -16,5 +16,20 @@ export default {
       method: 'post',
       data
     })
+  },
+  // 查询详情
+  getById(id) {
+    return request({
+      url: `/system/menu/${id}`,
+      method: 'get'
+    })
+  },
+  // 更新菜单
+  update(data) {
+    return request({
+      url: `/system/menu`,
+      method: 'put',
+      data
+    })
   }
 }

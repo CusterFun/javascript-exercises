@@ -78,7 +78,15 @@ export default {
       this.list = data
     },
     // 编辑菜单
-    handlerEdit(id) {},
+    handlerEdit(id) {
+      api.getById(id).then((response) => {
+        if (response.code === 20000) {
+          this.edit.formData = response.data
+          this.edit.title = '编辑'
+          this.edit.visible = true
+        }
+      })
+    },
     // 删除菜单
     handlerDelete(id) {},
     // 重置条件查询

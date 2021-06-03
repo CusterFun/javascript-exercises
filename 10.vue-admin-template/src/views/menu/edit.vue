@@ -95,7 +95,12 @@ export default {
       })
     },
     async submitData() {
-      const response = await api.add(this.formData)
+      let response = null
+      if (this.formData.id) {
+        response = await api.update(this.formData)
+      } else {
+        response = await api.add(this.formData)
+      }
       if (response.code === 20000) {
         this.$message({ type: 'success', message: '保存成功' }) // 提交成功
         this.handleClose() // 关闭窗口
