@@ -8,5 +8,12 @@ export default {
       method: 'post',
       data: { ...query, current, size }
     })
+  },
+  // 查询文章详情
+  getById(id) {
+    return request({
+      url: `/article/article/${id}`,
+      method: 'get'
+    })
   }
 }

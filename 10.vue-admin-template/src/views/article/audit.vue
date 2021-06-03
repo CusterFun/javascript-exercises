@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import api from '@/api/article'
+
 export default {
   components: {},
   props: {
@@ -59,6 +61,13 @@ export default {
       formData: {} // 查询到的文章详情
     }
   },
+  watch: { // 监听
+    visible(val) { // 监听 visible 的变化,将改变之后的值作为参数传入
+      if (val) { // val 为 true,打开窗口，查询文章详情
+        this.getArticleById()
+      }
+    }
+  },
   methods: {
     handleClose() { // 关闭窗口
       this.remoteClose() // 触发父组件关闭窗口
@@ -68,6 +77,10 @@ export default {
     },
     auditFailure() { // 审核不通过触发的方法
       console.log('审核不通过触发的方法')
+    },
+    async getArticleById() { // 查询文章详情
+      const { data } = await api.getById(this.id)
+      this.formData = data
     }
   }
 }
