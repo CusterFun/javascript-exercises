@@ -31,3 +31,12 @@ export function getList(query, current = 1, size = 20) {
     data: { ...query, current, size }
   })
 }
+
+// 新增用户
+export function add(data) {
+  return request({
+    url: '/system/user',
+    method: 'post',
+    data
+  })
+}

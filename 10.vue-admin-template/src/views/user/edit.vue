@@ -7,7 +7,7 @@
   >
     <el-form ref="formData" :rules="rules" :model="formData" label-width="100px" label-position="right" style="width: 400px" status-icon>
       <el-form-item label="用户名: " prop="username">
-        <el-input v-model="formData.username" maxlength="50" />
+        <el-input v-model="formData.username" maxlength="30" />
       </el-form-item>
       <el-form-item label="昵称: " prop="nickName">
         <el-input v-model="formData.nickName" maxlength="50" />
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import * as api from '@/api/user'
+
 export default {
   components: {},
   props: {
@@ -68,8 +70,24 @@ export default {
   data() {
     return {
       rules: {
-        name: [
-          { required: true, message: '请输入分类名称', trigger: 'blur' }
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 6, max: 30, message: '长度在 6 到 30 个字符', trigger: 'blur' }
+        ],
+        nickName: [
+          { required: true, message: '请输入昵称', trigger: 'blur' }
+        ],
+        mobile: [
+          { required: true, message: '请输入手机号', trigger: 'blur' }
+        ],
+        isAccountNonExpired: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        isAccountNonLocked: [
+          { required: true, message: '请选择', trigger: 'change' }
+        ],
+        isCredentialsNonExpired: [
+          { required: true, message: '请选择', trigger: 'change' }
         ]
       }
     }
@@ -79,12 +97,22 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 校验通过提交表单数据
-          // this.submitData()
+          this.submitData()
         } else {
           console.log('error submit!')
           return false
         }
       })
+    },
+    async submitData() {
+      this.formData.password = this.formData.username // 初始密码与用户名一致
+      const response = await api.add(this.formData)
+      if (response.code === 20000) {
+        this.$message({ message: '保存成功', type: 'success' })
+        this.handleClose()
+      } else {
+        this.$message({ message: '保存失败', type: 'error' })
+      }
     },
     handleClose() {
       this.$refs['formData'].resetFields() // 清空表单
