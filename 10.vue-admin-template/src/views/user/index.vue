@@ -54,7 +54,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="340">
-        <template slot-scope="scope">
+        <template v-if="scope.row.isEnabled===1" slot-scope="scope">
           <el-button type="success" size="mini" @click="handlerEdit(scope.row.id)">编辑</el-button>
           <el-button type="danger" size="mini" @click="handlerDelete(scope.row.id)">删除</el-button>
           <el-button type="primary" size="mini" @click="handlerRole(scope.row.id)">设置角色</el-button>
@@ -72,14 +72,18 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+
+    <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
   </div>
 </template>
 
 <script>
 import * as api from '@/api/user'
+import Edit from './edit'
 
 export default {
   name: 'User',
+  components: { Edit },
   data() {
     return {
       list: [],
@@ -88,7 +92,12 @@ export default {
         size: 20,
         total: 0
       },
-      query: {}
+      query: {},
+      edit: {
+        title: '',
+        visible: false,
+        formData: {}
+      }
     }
   },
   created() {
@@ -130,7 +139,7 @@ export default {
     // 打开新增窗口
     openAdd() {
       this.edit.visible = true
-      this.edit.title = '新增'
+      this.edit.title = '新增 - 默认密码与用户名一致'
     },
     // 编辑用户
     handlerEdit(id) {},
