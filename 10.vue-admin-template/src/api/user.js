@@ -22,3 +22,12 @@ export function logout() {
     method: 'post'
   })
 }
+
+// 用户条件分页列表数据
+export function getList(query, current = 1, size = 20) {
+  return request({
+    url: '/system/user/search',
+    method: 'post',
+    data: { ...query, current, size }
+  })
+}
