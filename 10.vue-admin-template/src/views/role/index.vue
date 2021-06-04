@@ -7,7 +7,7 @@
       <el-form-item>
         <el-button icon="el-icon-search" type="primary" @click="queryData">查询</el-button>
         <el-button icon="el-icon-refresh" @click="reloadData">重置</el-button>
-        <el-button icon="el-icon-circle-plus-outline" type="primary" @click="openAdd">新增</el-button>
+        <el-button v-if="!roleIds" icon="el-icon-circle-plus-outline" type="primary" @click="openAdd">新增</el-button>
       </el-form-item>
     </el-form>
 
@@ -20,7 +20,8 @@
       <el-table-column align="center" type="index" label="序号" width="50" />
       <el-table-column align="center" prop="name" label="角色名称" />
       <el-table-column align="center" prop="remark" label="备注" />
-      <el-table-column align="center" label="操作">
+      <!-- roleIds 如果是[]数组,则是用户管理组件传递过来的隐藏操作列表，如果是null显示操作列表 -->
+      <el-table-column v-if="!roleIds" align="center" label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handlerPermission(scope.row.id)">分配权限</el-button>
           <el-button type="success" size="mini" @click="handlerEdit(scope.row.id)">编辑</el-button>
@@ -52,6 +53,13 @@ import Permission from './permission'
 export default {
   name: 'Role',
   components: { Edit, Permission },
+  // 当用户管理模块，将当前这个组件文件作为子组件时，进行接收父组件传递过来的属性
+  props: {
+    roleIds: {
+      type: Array,
+      default: null
+    }
+  },
   data() {
     return {
       list: [],

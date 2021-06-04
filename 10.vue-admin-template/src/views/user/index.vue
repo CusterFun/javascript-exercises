@@ -74,16 +74,22 @@
     />
 
     <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
+
+    <el-dialog title="设置角色" :visible.sync="role.visible" width="65%">
+      <!-- roleIds 当前用户所拥有的角色id，saveUserRole 是子组件事件触发提交选择的角色id -->
+      <role :role-ids="role.roleIds" @save-user-role="saveUserRole" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import * as api from '@/api/user'
 import Edit from './edit'
+import Role from '../role'
 
 export default {
   name: 'User',
-  components: { Edit },
+  components: { Edit, Role },
   data() {
     return {
       list: [],
@@ -97,6 +103,11 @@ export default {
         title: '',
         visible: false,
         formData: {}
+      },
+      role: { // 弹出设置角色组件
+        visible: false,
+        // 传递到子组件中时,至少会传递一个空数组[],子组件判断是否有roleIds值
+        roleIds: [] // 当前用户所拥有的角色id
       }
     }
   },
@@ -175,9 +186,15 @@ export default {
       })
     },
     // 设置角色
-    handlerRole(id) {},
+    handlerRole(id) {
+      this.role.visible = true
+    },
     // 密码修改
-    handlerPwd(id) {}
+    handlerPwd(id) {},
+    // 角色列表子组件点击设置角色后会触发此方法来保存当前用户选择的角色id
+    saveUserRole() {
+
+    }
   }
 }
 </script>
