@@ -7,15 +7,21 @@
           <pie-chart />
         </el-card>
       </el-col>
+      <el-col :xs="24" :sm="24" :lg="12">
+        <el-card>
+          <bar-chart />
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
 <script>
 import PieChart from './components/PieChart'
+import BarChart from './components/BarChart'
 
 export default {
   name: 'Dashboard',
-  components: { PieChart },
+  components: { PieChart, BarChart },
   data() {
     return {}
   }
