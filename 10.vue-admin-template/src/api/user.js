@@ -40,3 +40,20 @@ export function add(data) {
     data
   })
 }
+
+// 通过用户id查询数据接口
+export function getById(id) {
+  return request({
+    url: '/system/user/${id}',
+    method: 'get'
+  })
+}
+
+// 用户数据更新
+export function update(data) {
+  return request({
+    url: '/system/user',
+    method: 'put',
+    data
+  })
+}

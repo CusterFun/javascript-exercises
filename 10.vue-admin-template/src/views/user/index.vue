@@ -142,7 +142,15 @@ export default {
       this.edit.title = '新增 - 默认密码与用户名一致'
     },
     // 编辑用户
-    handlerEdit(id) {},
+    handlerEdit(id) {
+      api.getById(id).then(response => {
+        if (response.code === 20000) {
+          this.edit.formData = response.data
+          this.edit.title = '编辑'
+          this.edit.visible = true
+        }
+      })
+    },
     // 删除用户
     handlerDelete(id) {},
     // 设置角色

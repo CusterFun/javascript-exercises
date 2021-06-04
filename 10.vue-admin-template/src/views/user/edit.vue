@@ -105,8 +105,13 @@ export default {
       })
     },
     async submitData() {
-      this.formData.password = this.formData.username // 初始密码与用户名一致
-      const response = await api.add(this.formData)
+      let response = null
+      if (this.formData.id) {
+        response = await api.update(this.formData)
+      } else {
+        this.formData.password = this.formData.username // 初始密码与用户名一致
+        response = await api.add(this.formData)
+      }
       if (response.code === 20000) {
         this.$message({ message: '保存成功', type: 'success' })
         this.handleClose()
