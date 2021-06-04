@@ -79,6 +79,8 @@
       <!-- roleIds 当前用户所拥有的角色id，saveUserRole 是子组件事件触发提交选择的角色id -->
       <role :role-ids="role.roleIds" @saveUserRole="saveUserRole" />
     </el-dialog>
+
+    <password title="修改密码" :user-id="pwd.userId" :visible="pwd.visible" :remote-close="remotePwdClose" />
   </div>
 </template>
 
@@ -86,10 +88,11 @@
 import * as api from '@/api/user'
 import Edit from './edit'
 import Role from '../role'
+import Password from './password'
 
 export default {
   name: 'User',
-  components: { Edit, Role },
+  components: { Edit, Role, Password },
   data() {
     return {
       list: [],
@@ -109,6 +112,10 @@ export default {
         visible: false,
         // 传递到子组件中时,至少会传递一个空数组[],子组件判断是否有roleIds值
         roleIds: [] // 当前用户所拥有的角色id
+      },
+      pwd: { // 修改密码组件
+        userId: null, // 修改哪一个用户
+        visible: false
       }
     }
   },
@@ -197,8 +204,6 @@ export default {
         }
       })
     },
-    // 密码修改
-    handlerPwd(id) {},
     // 角色列表子组件点击设置角色后会触发此方法来保存当前用户选择的角色id
     saveUserRole(roleIds) {
       // console.log('checkRoleList', roleIds)
@@ -210,6 +215,17 @@ export default {
           this.$message({ message: '分配角色失败', type: 'error' })
         }
       })
+    },
+    // 弹出密码修改窗口
+    handlerPwd(id) {
+      this.pwd.userId = id // 要修改的用户id
+      this.pwd.visible = true
+    },
+    // 关闭修改密码窗口
+    remotePwdClose() {
+      this.pwd.userId = null
+      this.pwd.visible = false
+      this.fetchData()
     }
   }
 }

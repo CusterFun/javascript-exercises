@@ -82,3 +82,12 @@ export function saveUserRole(id, roleIds) {
     data: roleIds
   })
 }
+
+// 提交修改新密码
+export function updatePassword(data) {
+  return request({
+    url: `/system/user/password`,
+    method: 'put',
+    data: data
+  })
+}
