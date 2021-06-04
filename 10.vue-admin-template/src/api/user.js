@@ -65,3 +65,11 @@ export function deleteById(id) {
     method: 'delete'
   })
 }
+
+// 查询用户拥有角色ids接口
+export function getRoleIdsByUserId(id) {
+  return request({
+    url: `/system/user/${id}/role/ids`,
+    method: 'get'
+  })
+}

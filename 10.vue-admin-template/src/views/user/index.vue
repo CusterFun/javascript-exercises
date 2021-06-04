@@ -187,7 +187,13 @@ export default {
     },
     // 设置角色
     handlerRole(id) {
-      this.role.visible = true
+      api.getRoleIdsByUserId(id).then(response => {
+        if (response.code === 20000) {
+          // 根据用户id获取该用户所拥有的角色ids,并传递给子组件
+          this.role.roleIds = response.data
+          this.role.visible = true
+        }
+      })
     },
     // 密码修改
     handlerPwd(id) {},

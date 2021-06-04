@@ -12,11 +12,15 @@
     </el-form>
 
     <el-table
+      ref="dataTable"
       :data="list"
       border
       stripe
       style="width: 100%"
-    >
+      row-key="id"
+    > <!-- reserve-selection 必须配合 row-key 使用，这样可以在切换页码后，保留前面选中的行 -->
+      <!-- 多选,reserve-selection 则会在数据更新之后保留之前选中的数据 -->
+      <el-table-column align="center" type="selection" reserve-selection width="55" />
       <el-table-column align="center" type="index" label="序号" width="50" />
       <el-table-column align="center" prop="name" label="角色名称" />
       <el-table-column align="center" prop="remark" label="备注" />
@@ -77,6 +81,13 @@ export default {
       per: { visible: false, roleId: null }
     }
   },
+  watch: {
+    // 重新获取数据，注意这个方法是查询第一页
+    roleIds() {
+      this.query = {} // 重置查询条件
+      this.queryData() // 给用户新分配角色，就重新查询所有角色数据
+    }
+  },
   created() {
     this.fetchData()
   },
@@ -85,6 +96,25 @@ export default {
       const { data } = await api.getList(this.query, this.page.current, this.page.size)
       this.list = data.records
       this.page.total = data.total
+      // 列表有数据后，勾选角色
+      this.checkRoles()
+    },
+    // 勾选角色
+    checkRoles() {
+      if (this.roleIds) {
+        // 强调：在 el-table 组件中一定要加上 ref="dataTable"
+        this.$refs.dataTable.clearSelection() // 清空上一次选择的
+        if (this.roleIds) { // 判断是否有角色ids
+          // 循环出查询到的每个角色数据,要判断父组件的roleIds中的每个角色对象
+          this.list.forEach(item => {
+            // 匹配到了，则选中
+            if (this.roleIds.indexOf(item.id) !== -1) {
+              // 选中，对应传递的是角色对象
+              this.$refs.dataTable.toggleRowSelection(item, true)
+            }
+          })
+        }
+      }
     },
     async handlerEdit(id) {
       const { data } = await api.getById(id) // 查询角色详情
