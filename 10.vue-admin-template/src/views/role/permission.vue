@@ -6,7 +6,7 @@
     :before-close="handleClose"
   >
     <!-- v-loading="loading" 值为 true 显示加载中 -->
-    <el-form v-loading="loading" label-width="80px">
+    <el-form ref="formData" v-loading="loading" label-width="80px">
       <!-- :data 绑定渲染数据数组, show-checkbox 是否显示勾选框 node-key="id": 树节点的唯一标识属性名
         props 配置相应数据中对应展示的属性名
         children 是子菜单的属性名
@@ -16,6 +16,7 @@
         accordion 手风琴模式，每次只展开一个，会将之前展开的隐藏
         -->
       <el-tree
+        ref="tree"
         :data="menuList"
         show-checkbox
         node-key="id"
@@ -94,7 +95,19 @@ export default {
       this.remoteClose()
     },
     // 提交表单
-    submitForm() {}
+    submitForm(formName) {
+      // 获取所有被选中的菜单id
+      const checkMenuIds = this.$refs.tree.getCheckedKeys()
+      // 调用保存角色权限菜单接口
+      roleApi.saveRoleMenu(this.roleId, checkMenuIds).then(response => {
+        if (response.code === 20000) {
+          this.$message({ message: '分配权限成功', type: 'success' })
+          this.handleClose() // 关闭窗口
+        } else {
+          this.$message({ message: '分配权限失败', type: 'error' })
+        }
+      })
+    }
   }
 }
 </script>

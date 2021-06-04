@@ -45,5 +45,13 @@ export default {
       url: `/system/role/${id}/menu/ids`,
       method: 'get'
     })
+  },
+  // 提交角色权限数据
+  saveRoleMenu(id, menuIds) {
+    return request({
+      url: `/system/role/${id}/menu/save`,
+      method: 'post',
+      data: menuIds
+    })
   }
 }
