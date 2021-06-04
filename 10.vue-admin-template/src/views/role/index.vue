@@ -8,6 +8,7 @@
         <el-button icon="el-icon-search" type="primary" @click="queryData">查询</el-button>
         <el-button icon="el-icon-refresh" @click="reloadData">重置</el-button>
         <el-button v-if="!roleIds" icon="el-icon-circle-plus-outline" type="primary" @click="openAdd">新增</el-button>
+        <el-button v-if="roleIds" icon="el-icon-circle-plus-outline" type="success" @click="handlerUserRole">设置角色</el-button>
       </el-form-item>
     </el-form>
 
@@ -18,7 +19,8 @@
       stripe
       style="width: 100%"
       row-key="id"
-    > <!-- reserve-selection 必须配合 row-key 使用，这样可以在切换页码后，保留前面选中的行 -->
+      @selection-change="handleSelectionChange"
+    > <!-- reserve-selection 必须配合 row-key 使用，这样可以在切换页码后，保留前面选中的行 selection-change	当选择项发生变化时会触发该事件 -->
       <!-- 多选,reserve-selection 则会在数据更新之后保留之前选中的数据 -->
       <el-table-column align="center" type="selection" reserve-selection width="55" />
       <el-table-column align="center" type="index" label="序号" width="50" />
@@ -78,7 +80,8 @@ export default {
         visible: false,
         formData: {}
       },
-      per: { visible: false, roleId: null }
+      per: { visible: false, roleId: null },
+      checkRoleList: [] // 存储选中的对象
     }
   },
   watch: {
@@ -186,6 +189,22 @@ export default {
       this.per.visible = false
       this.per.roleId = null
       this.fetchData()
+    },
+    // 当选择项发生变化时会触发该事件,搜集被选中的角色
+    handleSelectionChange(val) {
+      // console.log('搜集被选中的角色', val)
+      // val: 是选中的每个对象，将选中的每一个对象封装到这个val数组中
+      this.checkRoleList = val
+    },
+    // 点击设置角色按钮触发
+    handlerUserRole() {
+      const checkRoleIds = [] // 存放选中的角色 id
+      // 获取每个元素中的角色id,因为调用保存用户角色接口，只需要选中的角色id
+      this.checkRoleList.forEach(item => {
+        checkRoleIds.push(item.id)
+      })
+      // 触发父组件保存设置角色的事件函数
+      this.$emit('saveUserRole', checkRoleIds) // 传递选中的角色ids
     }
   }
 }

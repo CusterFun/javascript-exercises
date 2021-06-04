@@ -73,3 +73,12 @@ export function getRoleIdsByUserId(id) {
     method: 'get'
   })
 }
+
+// 提交用户角色数据
+export function saveUserRole(id, roleIds) {
+  return request({
+    url: `/system/user/${id}/role/save`,
+    method: 'post',
+    data: roleIds
+  })
+}
