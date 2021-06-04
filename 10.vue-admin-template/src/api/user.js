@@ -44,7 +44,7 @@ export function add(data) {
 // 通过用户id查询数据接口
 export function getById(id) {
   return request({
-    url: '/system/user/${id}',
+    url: `/system/user/${id}`,
     method: 'get'
   })
 }
@@ -55,5 +55,13 @@ export function update(data) {
     url: '/system/user',
     method: 'put',
     data
+  })
+}
+
+// 根据 ID 删除用户
+export function deleteById(id) {
+  return request({
+    url: `/system/user/${id}`,
+    method: 'delete'
   })
 }
