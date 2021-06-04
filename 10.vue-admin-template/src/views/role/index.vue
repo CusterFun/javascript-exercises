@@ -40,7 +40,7 @@
     />
 
     <edit :title="edit.title" :visible="edit.visible" :form-data="edit.formData" :remote-close="remoteClose" />
-    <permission title="分配权限" :visible="per.visible" :remote-close="remotePerClose" />
+    <permission title="分配权限" :visible="per.visible" :remote-close="remotePerClose" :role-id="per.roleId" />
   </div>
 </template>
 
@@ -66,7 +66,7 @@ export default {
         visible: false,
         formData: {}
       },
-      per: { visible: false }
+      per: { visible: false, roleId: null }
     }
   },
   created() {
@@ -139,11 +139,14 @@ export default {
     },
     // 弹出分配权限窗口
     handlerPermission(id) {
+      this.per.roleId = id
       this.per.visible = true
     },
     // 关闭分配权限弹窗
     remotePerClose() {
+      // 将点击的那个角色id传递给子组件，进行查询当前角色已经拥有的菜单ids
       this.per.visible = false
+      this.per.roleId = null
       this.fetchData()
     }
   }

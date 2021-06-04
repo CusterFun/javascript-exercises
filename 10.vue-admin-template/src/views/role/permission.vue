@@ -20,7 +20,7 @@
         show-checkbox
         node-key="id"
         accordion
-        :default-checked-keys="[5]"
+        :default-checked-keys="menuIds"
         :props="{children: 'children', label: 'name'}"
       />
       <el-form-item>
@@ -33,6 +33,7 @@
 
 <script>
 import menuApi from '@/api/menu'
+import roleApi from '@/api/role'
 
 export default {
   components: {},
@@ -40,6 +41,10 @@ export default {
     title: { // 弹窗的标题
       type: String,
       default: ''
+    },
+    roleId: { // 角色 id
+      type: Number,
+      default: -1
     },
     visible: { // 弹出窗口，true 为弹出
       type: Boolean,
@@ -53,7 +58,8 @@ export default {
   data() {
     return {
       menuList: [], // 存储所有菜单
-      loading: false // 是否正在加载中
+      loading: false, // 是否正在加载中
+      menuIds: [] // 默认选中的菜单ids
     }
   },
   watch: {
@@ -71,11 +77,22 @@ export default {
       menuApi.getList({}).then((response) => {
         console.log('response.data', response.data)
         this.menuList = response.data
+        // 查询角色之前所拥有的菜单ids，进行回显
+        this.getMenuIdsByRoleId()
       })
       this.loading = false // 加载完成
     },
+    // 查询角色之前所拥有的菜单ids，然后进行回显
+    async getMenuIdsByRoleId() {
+      const { data } = await roleApi.getMenuIdsByRoleId(this.roleId)
+      this.menuIds = data
+    },
     // 关闭窗口
-    handleClose() {},
+    handleClose() {
+      this.menuList = []
+      this.menuIds = []
+      this.remoteClose()
+    },
     // 提交表单
     submitForm() {}
   }

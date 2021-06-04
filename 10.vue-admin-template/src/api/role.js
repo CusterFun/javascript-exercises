@@ -38,5 +38,12 @@ export default {
       url: `/system/role/${id}`,
       method: 'delete'
     })
+  },
+  // 根据角色id查询所拥有的菜单ids
+  getMenuIdsByRoleId(id) {
+    return request({
+      url: `/system/role/${id}/menu/ids`,
+      method: 'get'
+    })
   }
 }
