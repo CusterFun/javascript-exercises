@@ -1,6 +1,9 @@
 <template>
   <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
   <div class="dashboard-container">
+    <!-- 面板统计组件 -->
+    <panel-group />
+
     <el-row :gutter="40">
       <el-col :xs="24" :sm="24" :lg="12">
         <el-card>
@@ -18,10 +21,11 @@
 <script>
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
+import PanelGroup from './components/PanelGroup'
 
 export default {
   name: 'Dashboard',
-  components: { PieChart, BarChart },
+  components: { PieChart, BarChart, PanelGroup },
   data() {
     return {}
   }
