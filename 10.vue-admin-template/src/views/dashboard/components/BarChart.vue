@@ -5,9 +5,11 @@
 <script>
 import * as echarts from 'echarts'
 require('echarts/theme/macarons') // 引入主题
+import resize from './mixins/resize'
 
 export default {
   components: {},
+  mixins: [resize], // 自适应窗口大小改变图表
   props: {
     className: {
       type: String,
