@@ -1,14 +1,23 @@
 <template>
-  <div v-if="!item.hidden">
-    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+  <div>
+    <!-- 没有子菜单，即只有一级菜单 -->
+    <!-- <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
         </el-menu-item>
       </app-link>
+    </template> -->
+    <template v-if="!item.children || item.children.length === 0">
+      <app-link :to="item.url">
+        <el-menu-item :index="item.url" :class="{'submenu-title-noDropdown':!isNest}">
+          <item :icon="item.icon" :title="item.name" />
+        </el-menu-item>
+      </app-link>
     </template>
 
-    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+    <!-- 有子菜单 -->
+    <!-- <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
@@ -18,6 +27,18 @@
         :is-nest="true"
         :item="child"
         :base-path="resolvePath(child.path)"
+        class="nest-menu"
+      />
+    </el-submenu> -->
+    <el-submenu v-else ref="subMenu" :index="item.id" popper-append-to-body>
+      <template slot="title">
+        <item :icon="item.icon" :title="item.name" />
+      </template>
+      <sidebar-item
+        v-for="child in item.children"
+        :key="child.id"
+        :is-nest="true"
+        :item="child"
         class="nest-menu"
       />
     </el-submenu>

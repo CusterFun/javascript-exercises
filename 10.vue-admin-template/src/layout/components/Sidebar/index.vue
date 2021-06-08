@@ -12,7 +12,8 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <!-- <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" /> -->
+        <sidebar-item v-for="menu in menuList" :key="menu.id" :item="menu" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -28,7 +29,8 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'menuList' // 获取 vuex 中的 menuList 状态值等价于 this.$store.getters.menuList
     ]),
     routes() {
       return this.$router.options.routes
