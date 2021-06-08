@@ -38,6 +38,7 @@ router.beforeEach(async(to, from, next) => {
       // 从 cookie 中获取用户信息
       const hasGetUserInfo = PcCookie.get(Key.userInfoKey)
       if (hasGetUserInfo) {
+        // 如果有用户信息，则通过用户id来获取当前用户所拥有的菜单和按钮权限
         // 如有有用户信息则跳转到目标路由
         next()
       } else {
