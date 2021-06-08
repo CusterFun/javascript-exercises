@@ -96,6 +96,7 @@ yarn add sass -D
 ```
 > element-plus 文档： https://element-plus.org/#/zh-CN/component/quickstart
 
+### 第二节：项目初始化--插件安装 
 #### VSCode 插件
 ```bash
 Eslint
@@ -103,7 +104,7 @@ Vetur
 TypeScript
 Prettier
 ```
-#### 制定目录结构
+### 第三节：目录结构规范 
 ```bash
 ├── src
 │   ├── api
@@ -128,11 +129,48 @@ Prettier
 ├── vite.config.js
 └── yarn.lock
 ```
-### 第二节：项目初始化--插件安装 
-### 第三节：目录结构规范 
 ### 第四节：路由封装（上） 
+路由跳转的三种方式
+router-link
+```js
+<router-link to\="/login"\>去登陆</router-link\>
+```
+传统跳转
+```vue
+<template>
+ <div>欢迎来到登录页面</div>
+ <el-button @click="goHome">回首页</el-button>
+</template>
+<script>
+export default {
+  name: 'login',
+  methods: {
+    goHome() {
+      this.$router.push('/welcome')
+    }
+  }
+}
+</script>
+```
+Componsition API 跳转
+
+```vue
+<template>
+ <div>欢迎来到登录页面</div>
+ <el-button @click="goHome">回首页</el-button>
+</template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const goHome = () => {
+  router.push('/welcome')
+}
+</script>
+```
 
 ### 第五节：路由封装（下） 
+
 ### 第六节：环境配置 
 ### 第七节：axios二次封装（上） 
 ### 第八节：axios二次封装（下） 
