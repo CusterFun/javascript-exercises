@@ -35,6 +35,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { PcCookie, Key } from '@/utils/cookie' // 导入 cookie
 
 export default {
   components: {
@@ -43,9 +44,13 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
+      'sidebar'
+      // 'avatar'
+    ]),
+    avatar() { // 使用 mapGetters 简写
+      // return this.$store.getters.avatar
+      return PcCookie.get(Key.userInfoKey) ? JSON.parse(PcCookie.get(Key.userInfoKey)).imageUrl : ''
+    }
   },
   methods: {
     toggleSideBar() {
