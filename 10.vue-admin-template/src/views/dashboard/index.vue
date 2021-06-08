@@ -1,6 +1,10 @@
 <template>
   <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
   <div class="dashboard-container">
+    <div>
+      菜单权限：{{ $store.getters.menuList }} <br>
+      按钮权限：{{ $store.getters.menuList }}</div>
+
     <!-- 面板统计组件 -->
     <panel-group :user-total="userTotal" :article-total="articleTotal" :question-total="questionTotal" />
 

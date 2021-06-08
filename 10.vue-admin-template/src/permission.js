@@ -1,6 +1,6 @@
 import router from './router'
-// import store from './store'
-// import { Message } from 'element-ui'
+import store from './store'
+import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 // import { getToken } from '@/utils/auth' // get token from cookie
@@ -39,8 +39,18 @@ router.beforeEach(async(to, from, next) => {
       const hasGetUserInfo = PcCookie.get(Key.userInfoKey)
       if (hasGetUserInfo) {
         // 如果有用户信息，则通过用户id来获取当前用户所拥有的菜单和按钮权限
-        // 如有有用户信息则跳转到目标路由
-        next()
+        if (store.getters.init === false) {
+          // 还未查询用户权限信息，下面则触发 action 来进行查询
+          store.dispatch('menu/GetUserMenu').then(() => {
+            // 继续访问目标路由且不会留下 history 记录
+            next({ ...to, replace: true })
+          }).catch(err => {
+            Message.error(err || '获取用户权限信息失败')
+          })
+        } else {
+          // 跳转到目标路由
+          next()
+        }
       } else {
         // 如果没有用户信息，则没有登录，则跳转到认证客户端
         window.location.href = `${process.env.VUE_APP_AUTH_CENTER_URL}?redirectURL=${window.location.href}`
