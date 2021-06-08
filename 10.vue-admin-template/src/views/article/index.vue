@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" :model="query" size="mini">
+    <el-form v-permission="'article:searchX'" :inline="true" :model="query" size="mini">
       <el-form-item label="文章标题: ">
         <el-input v-model.trim="query.title" />
       </el-form-item>
@@ -48,8 +48,8 @@
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="openView(scope.row.id)">查看</el-button>
           <!-- 审核：只有 status === 1 才显示，其他不显示，删除：只有 status !== 0 才显示 -->
-          <el-button v-if="scope.row.status===1" type="success" size="mini" @click="openAudit(scope.row.id)">审核</el-button>
-          <el-button v-if="scope.row.status!==0" type="danger" size="mini" @click="handlerDelete(scope.row.id)">删除</el-button>
+          <el-button v-if="scope.row.status===1" v-permission="'article:audit'" type="success" size="mini" @click="openAudit(scope.row.id)">审核</el-button>
+          <el-button v-if="scope.row.status!==0" v-permission="'article:deleteX'" type="danger" size="mini" @click="handlerDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

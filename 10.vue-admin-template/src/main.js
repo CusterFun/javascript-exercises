@@ -14,6 +14,9 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import directive from '@/directive' // 自定义指令导入
+
+Vue.use(directive)
 
 /**
  * If you don't want to use mock-server
