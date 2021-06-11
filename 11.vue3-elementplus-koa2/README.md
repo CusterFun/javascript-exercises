@@ -176,3 +176,116 @@ const goHome = () => {
 ### 第八节：axios二次封装（下） 
 ### 第九节：storage二次封装 
 ### 第十节：主页结构布局
+
+## 第三章  Koa架构设计
+
+### 3-6 Mac下Mongo安装和配置
+
+1. 下载 [MongoDB Community Download | MongoDB](https://www.mongodb.com/try/download/community) 解压到指定目录下
+2. 解压后创建文件夹如下
+
+```bash
+└── mongodb-macos-x86_64-4.4.6
+  ├── LICENSE-Community.txt
+  ├── MPL-2
+  ├── README
+  ├── THIRD-PARTY-NOTICES
+  ├── bin
+  │  ├── install_compass
+  │  ├── mongo
+  │  ├── mongod
+  │  └── mongos
+  └── mongo
+    ├── conf
+    │  └── mongo.conf
+    ├── data
+    └── log
+      └── mongo.log
+```
+
+3. 写 mongo/conf/mongo.conf 文件内容
+
+```bash
+#数据库路径
+dbpath=~/Work/install-soft/mongodb-macos-x86_64-4.4.6/mongo/data
+#日志输出文件路径
+logpath=~/Work/install-soft/mongodb-macos-x86_64-4.4.6/mongo/log/mongo.log
+#错误日志采用追加模式
+logappend=true
+#启用日志文件，默认启用
+journal=true
+#这个选项可以过滤掉一些无用的日志信息，若需要调试使用请设置为false
+quiet=true
+#端口好 默认为27017
+port=27017
+#auth=true
+fork=true%
+```
+
+4. 挂载
+
+```bash
+ln -s ~/Work/install-soft/mongodb-macos-x86_64-4.4.6/bin/mongod /usr/local/bin/mongod
+ln -s ~/Work/install-soft/mongodb-macos-x86_64-4.4.6/bin/mongo /usr/local/bin/mongo
+```
+
+5. 启动 mongo
+
+```bash
+mongod --config ~/Work/install-soft/mongodb-macos-x86_64-4.4.6/mongo/conf/mongo.conf
+```
+
+### 3-8 Mongo基础入门 
+
+| SQL                 | Mongo              |
+| ------------------- | ------------------ |
+| 表（Table）         | 集合（Collection） |
+| 行（Row）           | 文档（Document）   |
+| 列（Col）           | 字段（Field）      |
+| 主键（Primary Key） | 对象ID（ObjectId） |
+
+#### 数据库操作
+
+| 描述       | 命令              |
+| ---------- | ----------------- |
+| 创建数据库 | use demo          |
+| 查看数据库 | show dbs          |
+| 删除数据库 | db.dropDatabase() |
+
+#### 集合操作
+
+| 描述     | 命令                      |
+| -------- | ------------------------- |
+| 创建集合 | db.createCollection(name) |
+| 查看集合 | show collections          |
+| 删除集合 | db.collection.drop()      |
+
+#### 文档操作
+
+| 描述     | 命令                                                         |
+| -------- | ------------------------------------------------------------ |
+| 创建文档 | db.collection.insertOne({}) / db.collection.insertMany({})   |
+| 查看文档 | db.collections.find({})                                      |
+| 删除文档 | db.collection.deleteOne() / db.collection.deleteMany()       |
+| 更新文档 | db.collection.update({}, {}, false, true) 第3个参数是没有找到是否创建新的，第4个参数是否批量更新，默认只更新找到的第一个 |
+
+#### 条件操作
+
+| 描述     | 命令 |
+| -------- | ---- |
+| 大于     | $gt  |
+| 小于     | $lt  |
+| 大于等于 | $gte |
+| 小于等于 | $lte |
+
+### 3-10 接口文档设计
+
+#### 后端开发
+
+- 理解需求
+- 关键功能技术评审
+- 设计表结构
+- 设计接口文档
+- 接口功能实现
+- 接口联调、自测、提测
+
