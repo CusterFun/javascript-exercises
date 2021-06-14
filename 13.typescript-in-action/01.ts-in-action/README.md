@@ -997,3 +997,46 @@ logGenericsBound({length: 1})
 1. 增强程序的扩展性：函数和类可以轻松地支持多种类型
 2. 增强代码的可读性：不必写多条函数重载，或者冗长的联合类型声明
 3. 灵活控制类型之间的约束
+
+## 类型检查机制1：类型推断
+
+### 类型检查机制: 
+
+Typescript编译器在做类型检查时,所秉承的一些原则,以及表现出的一些行为。
+作用:辅助开发,提高开发效率
+
+- 类型推断
+- 类型兼容性
+- 类型保护
+
+### 类型推断
+
+不需要指定变量的类型(函数的返回值类型), Typescript可以根据某些规则自动地为其推断出一个类型
+
+- 基础类型推断
+- 最佳通用类型推断
+- 上下文类型推断
+
+```tsx
+// 基础类型推断
+let a = 1;
+let b = [1, null, 'a']
+let c = {x: 1, y: 'a'}
+
+let d = (x = 1) => x + 1
+
+window.onkeydown = (event) => {
+    // console.log(event.button)
+}
+
+interface Foo {
+    bar: number
+}
+// let foo = {} as Foo // 类型断言
+// let foo = <Foo>{}
+let foo: Foo = { // 在声明时指定类型
+    bar: 1
+}
+// foo.bar = 1
+```
+
