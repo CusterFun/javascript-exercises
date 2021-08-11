@@ -1,0 +1,19 @@
+GET http://localhost:3001/users
+
+###
+
+POST http://localhost:3001/signup
+Content-Length: application/json; charset=utf-8
+
+{
+  "name": "Jerry",
+  "email": "jerry@example.com",
+}
+
+###
+POST http://localhost:3001/post
+Content-Length: application/json
+
+{
+  
+}

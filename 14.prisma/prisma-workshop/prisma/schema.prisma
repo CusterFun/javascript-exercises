@@ -1,0 +1,27 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  name String?
+  email String @unique
+  posts Post[] // 一对多关系
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  title String // 文章标题
+  content String? // 文章内容
+  published Boolean @default(false) // 发布状态
+  authorId Int? // 作者
+  author User? @relation(fields: [authorId], references: [id]) // 关联关系键 fields，关联对象 references
+  viewCount Int @default(0) // 浏览次数
+  createAt DateTime @default(now()) // 创建时间
+  updateAt DateTime @updatedAt @default(now()) // 更新时间
+}
